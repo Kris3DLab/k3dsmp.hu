@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K3DSMP | Prémium Minecraft Közösség</title>
+    <title>K3DSMP | Prémium Magyar Minecraft SMP</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -218,9 +218,7 @@
 
         .footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
 
-        /* SIKERES LOGIN STÍLUS */
         .logged-in { color: var(--success) !important; font-weight: 800 !important; }
-
     </style>
 </head>
 <body>
@@ -238,39 +236,39 @@
         <div class="status-dot"></div>
         <span id="playerCount">Szerver online: 42 játékos</span>
     </div>
-    <h1>Építs. Télj túl.<br>Urald a világot.</h1>
-    <p>A legmodernebb magyar túlélő szerver, ahol a közösség az első.</p>
+    <h1>Építs. Túlélj.<br>Urald a blokkvilágot.</h1>
+    <p>A legmenőbb magyar Survival SMP szerver – ahol a közösség építi a legendákat. Creeper-biztos szórakozás, prémium rangok és igazi kaland vár rád!</p>
     
     <div class="ip-box">
         <div class="ip-text" id="serverIP">play.k3dsmp.hu</div>
-        <button class="copy-btn" onclick="copyIP()">MÁSOLÁS</button>
+        <button class="copy-btn" onclick="copyIP()">IP MÁSOLÁSA</button>
     </div>
 </section>
 
 <div class="grid">
     <div class="card">
-        <h2>Kezdd el most</h2>
-        <p>Hozz létre egy ingyenes fiókot, hogy szinkronizáld a rangjaidat és statisztikáidat.</p>
-        <button class="btn" style="background: #ef4444; color: white;" onclick="openModal('registerModal')">Regisztráció</button>
+        <h2>Kezdj neki most!</h2>
+        <p>Hozz létre ingyenes fiókot, szinkronizáld a rangjaidat, statisztikáidat és építsd tovább a legendádat a szerveren.</p>
+        <button class="btn" style="background: #ef4444; color: white;" onclick="openModal('registerModal')">Fiók létrehozása</button>
     </div>
 
     <div class="card">
-        <h2>Kliens Letöltés</h2>
-        <p>Használd a saját optimalizált launcherünket a legjobb FPS élményért.</p>
-        <button class="btn btn-outline" onclick="window.alert('Letöltés indítása...')">Letöltés .EXE</button>
+        <h2>Optimalizált Kliens</h2>
+        <p>Töltsd le a saját K3DSMP Launchert a maximális FPS-ért és extra funkciókért. Nincs több lag, csak tiszta block-építés!</p>
+        <button class="btn btn-outline" onclick="window.alert('Letöltés elindult... (hamarosan valódi link)')">Letöltés .EXE</button>
     </div>
 
     <div class="card">
-        <h2>Támogatás</h2>
-        <p>Vásárolj rangokat, kulcsokat és egyedi kiegészítőket a Bányaközpontban.</p>
-        <button class="btn" style="background: var(--success); color: white;" onclick="window.alert('A bolt hamarosan nyílik!')">Webshop</button>
+        <h2>Bányaközpont (Webshop)</h2>
+        <p>Vásárolj prémium rangokat, speciális itemeket, kulcsokat és egyedi kozmetikumokat. Támogasd a szervert és szerezz előnyöket!</p>
+        <button class="btn" style="background: var(--success); color: white;" onclick="window.alert('A webshop hamarosan megnyílik!')">Webshop megnyitása</button>
     </div>
 </div>
 
 <div id="loginModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content">
-        <h3>Üdvözlünk!</h3>
-        <p>Jelentkezz be a fiókodba.</p>
+        <h3>Üdv újra a blokkvilágban!</h3>
+        <p>Jelentkezz be a fiókodba és folytasd az építkezést.</p>
         <input type="text" id="lUser" placeholder="Felhasználónév">
         <input type="password" id="lPass" placeholder="Jelszó">
         <button class="btn" style="background: var(--primary); color: white;" onclick="handleLogin()">Bejelentkezés</button>
@@ -279,21 +277,19 @@
 
 <div id="registerModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content">
-        <h3>Regisztráció</h3>
-        <p>Csatlakozz a K3DSMP közösséghez.</p>
+        <h3>Csatlakozz a közösséghez!</h3>
+        <p>Hozz létre fiókot és lépj be a K3DSMP világába. Készen állsz az építésre?</p>
         <input type="text" id="rUser" placeholder="Felhasználónév">
         <input type="password" id="rPass" placeholder="Jelszó">
-        <button class="btn" style="background: var(--primary); color: white;" onclick="handleRegister()">Fiók létrehozása</button>
+        <button class="btn" style="background: var(--primary); color: white;" onclick="handleRegister()">Világot építeni!</button>
     </div>
 </div>
 
 <footer class="footer">
-    K3DSMP &copy; 2026 • Készült a közösségnek.
+    K3DSMP &copy; 2026 • Építve a magyar Minecraft közösségnek. Minden jog fenntartva.
 </footer>
 
 <script>
-    // --- FUNKCIÓK ---
-
     function copyIP() {
         const ip = document.getElementById('serverIP').innerText;
         navigator.clipboard.writeText(ip);
@@ -301,7 +297,7 @@
         btn.innerText = "MÁSOLVA!";
         btn.style.background = "#10b981";
         setTimeout(() => {
-            btn.innerText = "MÁSOLÁS";
+            btn.innerText = "IP MÁSOLÁSA";
             btn.style.background = "var(--primary)";
         }, 2000);
     }
@@ -316,51 +312,47 @@
         }
     }
 
-    // REGISZTRÁCIÓ
     function handleRegister() {
-        const u = document.getElementById('rUser').value;
+        const u = document.getElementById('rUser').value.trim();
         const p = document.getElementById('rPass').value;
 
         if(u.length < 3 || p.length < 4) {
-            return alert("Túl rövid adatok!");
+            return alert("A felhasználónév legalább 3, a jelszó legalább 4 karakter hosszú legyen!");
         }
 
         localStorage.setItem('user_' + u, p);
-        alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
+        alert("Sikeres regisztráció! Most már bejelentkezhetsz és elkezdheted az építkezést.");
         document.getElementById('registerModal').style.display = 'none';
     }
 
-    // BEJELENTKEZÉS
     function handleLogin() {
-        const u = document.getElementById('lUser').value;
+        const u = document.getElementById('lUser').value.trim();
         const p = document.getElementById('lPass').value;
 
         const storedPass = localStorage.getItem('user_' + u);
 
         if(storedPass && storedPass === p) {
-            // SIKER
             document.getElementById('loginModal').style.display = 'none';
             updateUI(u);
-            alert("Üdvözlünk, " + u + "!");
+            alert("Üdvözlünk újra a szerveren, " + u + "! 🪓");
         } else {
-            alert("Hibás felhasználónév vagy jelszó!");
+            alert("Hibás felhasználónév vagy jelszó! Próbáld újra.");
         }
     }
 
     function updateUI(username) {
         const nav = document.getElementById('navContent');
         nav.innerHTML = `
-            <span class="user-status">Bejelentkezve: <b class="logged-in">${username}</b></span>
+            <span class="user-status">Bejelentkezve mint: <b class="logged-in">${username}</b></span>
             <a href="javascript:void(0)" onclick="location.reload()">Kijelentkezés</a>
         `;
     }
 
-    // Szerver játékosszám szimuláció (hogy éljen az oldal)
+    // Játékosszám szimuláció
     setInterval(() => {
-        const count = Math.floor(Math.random() * (60 - 30 + 1) + 30);
-        document.getElementById('playerCount').innerText = `Szerver online: ${count} játékos`;
-    }, 5000);
-
+        const count = Math.floor(Math.random() * (65 - 35 + 1) + 35);
+        document.getElementById('playerCount').innerText = `Szerver online: ${count} bányász`;
+    }, 4500);
 </script>
 
 </body>
