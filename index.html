@@ -3,27 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K3DSMP | A jövő Minecraft szervere</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>K3DSMP | Prémium Minecraft Közösség</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff9800;
-            --primary-hover: #e68a00;
-            --success: #28a745;
-            --danger: #dc3545;
-            --bg-dark: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-light: #f8fafc;
+            --primary-glow: rgba(255, 152, 0, 0.4);
+            --bg: #0b0f1a;
+            --surface: #161b2c;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --success: #10b981;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
-            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 152, 0, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(30, 64, 175, 0.1) 0px, transparent 50%);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* NAVIGATION */
@@ -31,274 +34,333 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 10%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 20px 8%;
+            background: rgba(11, 15, 26, 0.7);
+            backdrop-filter: blur(15px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: pointer; }
         .logo span { color: var(--primary); }
 
+        .nav-links { display: flex; align-items: center; gap: 20px; }
         .nav-links a {
-            margin-left: 25px;
             text-decoration: none;
-            color: #cbd5e1;
-            font-weight: 500;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 14px;
             transition: 0.3s;
         }
-
         .nav-links a:hover { color: var(--primary); }
 
-        /* HERO SECTION */
+        .user-status {
+            padding: 8px 16px;
+            background: var(--surface);
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+        }
+
+        /* HERO */
         .hero {
+            padding: 100px 20px 60px;
             text-align: center;
-            padding: 120px 20px;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Enyhe textúra */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; }
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
             margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
         }
 
-        .hero p { font-size: 1.2rem; color: #94a3b8; margin-bottom: 30px; }
+        .ip-box {
+            display: inline-flex;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+        }
 
-        .btn-main {
-            padding: 15px 35px;
-            font-size: 18px;
-            font-weight: 600;
+        .ip-text {
+            padding: 10px 20px;
+            font-family: monospace;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .copy-btn {
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            transition: 0.2s;
         }
 
-        .btn-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5);
-        }
+        .copy-btn:hover { background: #e68a00; transform: scale(1.02); }
 
-        /* CARDS SECTION */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
+        /* GRID */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 60px 8%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px 30px;
+            background: var(--surface);
+            padding: 40px;
             border-radius: 24px;
-            text-align: center;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
             border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .card h2 { margin-bottom: 15px; font-size: 24px; }
-        .card p { color: #94a3b8; margin-bottom: 25px; }
+        .card h2 { margin-bottom: 12px; font-size: 22px; }
+        .card p { color: var(--text-dim); margin-bottom: 24px; font-size: 15px; }
 
-        .card button {
+        .btn {
+            display: block;
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            text-align: center;
+            transition: 0.2s;
         }
 
-        .btn-red { background: var(--danger); color: white; }
-        .btn-blue { background: #3b82f6; color: white; }
-        .btn-green { background: var(--success); color: white; }
-
-        .card button:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: white; }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); }
 
         /* MODALS */
         .modal {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            backdrop-filter: blur(8px);
         }
 
         .modal-content {
-            background: #1e293b;
-            padding: 40px;
-            border-radius: 20px;
+            background: var(--surface);
             width: 90%;
             max-width: 400px;
+            padding: 40px;
+            border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.1);
             position: relative;
         }
 
-        .modal-content h3 { margin-bottom: 20px; text-align: center; font-size: 24px; }
+        .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
+        .modal-content p { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
 
-        .modal input {
+        input {
             width: 100%;
             padding: 14px;
-            margin-bottom: 15px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
+            margin-bottom: 16px;
+            background: #0b0f1a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
             color: white;
-            outline: none;
+            font-size: 16px;
         }
 
-        .modal input:focus { border-color: var(--primary); }
+        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
 
-        .modal .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            border: none;
-            color: white;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+        .footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
 
-        /* FOOTER */
-        .footer {
-            text-align: center;
-            padding: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #64748b;
-            font-size: 14px;
-        }
+        /* SIKERES LOGIN STÍLUS */
+        .logged-in { color: var(--success) !important; font-weight: 800 !important; }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; gap: 15px; }
-            .nav-links a { margin: 0 10px; }
-        }
     </style>
 </head>
 <body>
 
 <nav class="navbar">
-    <div class="logo">K3D<span>SMP</span></div>
-    <div class="nav-links">
-        <a href="#">Kezdőlap</a>
+    <div class="logo" onclick="location.reload()">K3D<span>SMP</span></div>
+    <div class="nav-links" id="navContent">
         <a href="javascript:void(0)" onclick="openModal('loginModal')">Bejelentkezés</a>
-        <a href="javascript:void(0)" onclick="openModal('registerModal')" style="color: var(--primary);">Regisztráció</a>
+        <a href="javascript:void(0)" onclick="openModal('registerModal')" style="color: var(--primary)">Regisztráció</a>
     </div>
 </nav>
 
 <section class="hero">
-    <h1>K3DSMP Minecraft Szerver</h1>
-    <p>Éld át a valódi túlélő élményt egy prémium közösségben!</p>
-    <button class="btn-main" onclick="copyIP()">MÁSOLOM AZ IP-T</button>
+    <div class="status-badge">
+        <div class="status-dot"></div>
+        <span id="playerCount">Szerver online: 42 játékos</span>
+    </div>
+    <h1>Építs. Télj túl.<br>Urald a világot.</h1>
+    <p>A legmodernebb magyar túlélő szerver, ahol a közösség az első.</p>
+    
+    <div class="ip-box">
+        <div class="ip-text" id="serverIP">play.k3dsmp.hu</div>
+        <button class="copy-btn" onclick="copyIP()">MÁSOLÁS</button>
+    </div>
 </section>
 
-<div class="container">
+<div class="grid">
     <div class="card">
-        <h2>Csatlakozz</h2>
-        <p>Még nincs fiókod? Regisztrálj percek alatt és kezdj el játszani!</p>
-        <button class="btn-red" onclick="openModal('registerModal')">Fiók létrehozása</button>
+        <h2>Kezdd el most</h2>
+        <p>Hozz létre egy ingyenes fiókot, hogy szinkronizáld a rangjaidat és statisztikáidat.</p>
+        <button class="btn" style="background: #ef4444; color: white;" onclick="openModal('registerModal')">Regisztráció</button>
     </div>
 
     <div class="card">
-        <h2>Játékfájlok</h2>
-        <p>Töltsd le a szükséges klienst és a kiegészítőket a kezdéshez.</p>
-        <button class="btn-blue" onclick="alert('Letöltés hamarosan...')">Letöltés</button>
+        <h2>Kliens Letöltés</h2>
+        <p>Használd a saját optimalizált launcherünket a legjobb FPS élményért.</p>
+        <button class="btn btn-outline" onclick="window.alert('Letöltés indítása...')">Letöltés .EXE</button>
     </div>
 
     <div class="card">
-        <h2>Webshop</h2>
-        <p>Támogasd a szervert és szerezz különleges rangokat vagy kozmetikumokat.</p>
-        <button class="btn-green" onclick="alert('Webshop fejlesztés alatt!')">Megnyitás</button>
+        <h2>Támogatás</h2>
+        <p>Vásárolj rangokat, kulcsokat és egyedi kiegészítőket a Bányaközpontban.</p>
+        <button class="btn" style="background: var(--success); color: white;" onclick="window.alert('A bolt hamarosan nyílik!')">Webshop</button>
     </div>
 </div>
 
-<div id="loginModal" class="modal" onclick="closeOutside(event)">
+<div id="loginModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content">
-        <h3>Üdv újra!</h3>
-        <input id="loginUser" type="text" placeholder="Felhasználónév">
-        <input id="loginPass" type="password" placeholder="Jelszó">
-        <button class="submit-btn" onclick="login()">Belépés</button>
+        <h3>Üdvözlünk!</h3>
+        <p>Jelentkezz be a fiókodba.</p>
+        <input type="text" id="lUser" placeholder="Felhasználónév">
+        <input type="password" id="lPass" placeholder="Jelszó">
+        <button class="btn" style="background: var(--primary); color: white;" onclick="handleLogin()">Bejelentkezés</button>
     </div>
 </div>
 
-<div id="registerModal" class="modal" onclick="closeOutside(event)">
+<div id="registerModal" class="modal" onclick="closeModal(event)">
     <div class="modal-content">
         <h3>Regisztráció</h3>
-        <input id="regUser" type="text" placeholder="Felhasználónév">
-        <input id="regPass" type="password" placeholder="Jelszó">
-        <button class="submit-btn" onclick="register()">Létrehozás</button>
+        <p>Csatlakozz a K3DSMP közösséghez.</p>
+        <input type="text" id="rUser" placeholder="Felhasználónév">
+        <input type="password" id="rPass" placeholder="Jelszó">
+        <button class="btn" style="background: var(--primary); color: white;" onclick="handleRegister()">Fiók létrehozása</button>
     </div>
 </div>
 
 <footer class="footer">
-    K3DSMP &copy; 2026 • Minden jog fenntartva.
+    K3DSMP &copy; 2026 • Készült a közösségnek.
 </footer>
 
 <script>
+    // --- FUNKCIÓK ---
+
     function copyIP() {
-        navigator.clipboard.writeText("play.k3dsmp.hu");
-        const btn = document.querySelector('.btn-main');
-        btn.innerText = "IP KIMÁSOLVA!";
-        btn.style.background = "#28a745";
+        const ip = document.getElementById('serverIP').innerText;
+        navigator.clipboard.writeText(ip);
+        const btn = document.querySelector('.copy-btn');
+        btn.innerText = "MÁSOLVA!";
+        btn.style.background = "#10b981";
         setTimeout(() => {
-            btn.innerText = "MÁSOLOM AZ IP-T";
+            btn.innerText = "MÁSOLÁS";
             btn.style.background = "var(--primary)";
         }, 2000);
     }
 
     function openModal(id) {
-        document.getElementById(id).style.display = "flex";
+        document.getElementById(id).style.display = 'flex';
     }
 
-    function closeOutside(e) {
-        if (e.target.classList.contains('modal')) {
-            e.target.style.display = "none";
+    function closeModal(e) {
+        if(e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
         }
     }
 
-    function register() {
-        const u = document.getElementById('regUser').value;
-        const p = document.getElementById('regPass').value;
-        if (!u || !p) return alert("Kérlek tölts ki minden mezőt!");
-        
-        localStorage.setItem(u, p);
-        alert("Sikeres regisztráció!");
-        document.getElementById('registerModal').style.display = "none";
+    // REGISZTRÁCIÓ
+    function handleRegister() {
+        const u = document.getElementById('rUser').value;
+        const p = document.getElementById('rPass').value;
+
+        if(u.length < 3 || p.length < 4) {
+            return alert("Túl rövid adatok!");
+        }
+
+        localStorage.setItem('user_' + u, p);
+        alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
+        document.getElementById('registerModal').style.display = 'none';
     }
 
-    function login() {
-        const u = document.getElementById('loginUser').value;
-        const p = document.getElementById('loginPass').value;
-        if (localStorage.getItem(u) === p && u !== "") {
-            alert("Üdvözlünk a fedélzeten, " + u + "!");
-            document.getElementById('loginModal').style.display = "none";
+    // BEJELENTKEZÉS
+    function handleLogin() {
+        const u = document.getElementById('lUser').value;
+        const p = document.getElementById('lPass').value;
+
+        const storedPass = localStorage.getItem('user_' + u);
+
+        if(storedPass && storedPass === p) {
+            // SIKER
+            document.getElementById('loginModal').style.display = 'none';
+            updateUI(u);
+            alert("Üdvözlünk, " + u + "!");
         } else {
             alert("Hibás felhasználónév vagy jelszó!");
         }
     }
+
+    function updateUI(username) {
+        const nav = document.getElementById('navContent');
+        nav.innerHTML = `
+            <span class="user-status">Bejelentkezve: <b class="logged-in">${username}</b></span>
+            <a href="javascript:void(0)" onclick="location.reload()">Kijelentkezés</a>
+        `;
+    }
+
+    // Szerver játékosszám szimuláció (hogy éljen az oldal)
+    setInterval(() => {
+        const count = Math.floor(Math.random() * (60 - 30 + 1) + 30);
+        document.getElementById('playerCount').innerText = `Szerver online: ${count} játékos`;
+    }, 5000);
+
 </script>
 
 </body>
