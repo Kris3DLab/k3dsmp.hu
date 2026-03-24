@@ -2,160 +2,147 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>K3DSMP</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-}
+body { font-family: Arial; margin:0; background:#f5f5f5; }
 
-/* NAVBAR */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: white;
+    display:flex; justify-content:space-between;
+    padding:15px; background:white;
 }
+.logo { font-size:22px; font-weight:bold; }
+.logo span { color:orange; }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.logo span {
-    color: orange;
-}
-
-.nav-links a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #333;
-}
-
-.nav-links a.btn {
-    background: orange;
-    padding: 8px 12px;
-    border-radius: 5px;
-    color: white;
-}
-
-/* HERO */
 .hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 60px 40px;
-    background: #eaeaea;
+    padding:50px;
+    display:flex;
+    justify-content:space-between;
 }
 
-.hero-text h1 {
-    font-size: 36px;
+button {
+    padding:10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
 }
 
-.hero-text p {
-    margin: 20px 0;
+.green { background:green; color:white; }
+.red { background:red; color:white; }
+.blue { background:#007bff; color:white; }
+
+.box {
+    background:white;
+    padding:20px;
+    margin:20px;
+    border-radius:10px;
 }
 
-.hero-text button {
-    padding: 12px 20px;
-    background: green;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.hero img {
-    width: 300px;
-}
-
-/* CARDS */
-.cards {
-    display: flex;
-    justify-content: space-around;
-    padding: 40px;
-    background: white;
-}
-
-.card {
-    text-align: center;
-    width: 30%;
-}
-
-.card button {
-    margin-top: 10px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.red { background: red; color: white; }
-.blue { background: #007bff; color: white; }
-.green { background: green; color: white; }
-
-/* FOOTER BAR */
-.footer-bar {
-    background: orange;
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
+.hidden { display:none; }
 </style>
-
 </head>
+
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
     <div class="logo">K3D<span>SMP</span></div>
-    <div class="nav-links">
-        <a href="#">Kezdőlap</a>
-        <a href="#">Regisztráció</a>
-        <a href="#">Letöltés</a>
-        <a href="#" class="btn">Vásárlás</a>
+    <div>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showRegister()">Regisztráció</button>
     </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
-    <div class="hero-text">
-        <h1>Gyerekkorod kedvenc Minecraft szervere!</h1>
-        <p>Éld át újra a régi kalandokat a K3DSMP-n!</p>
-        <button>PLAY.K3DSMP.HU</button>
-    </div>
-    <img src="https://via.placeholder.com/300" alt="minecraft">
-</div>
-
-<!-- CARDS -->
-<div class="cards">
-    <div class="card">
-        <h2>Regisztráció</h2>
-        <p>Csatlakozáshoz regisztrálnod kell.</p>
-        <button class="red">Regisztrálok</button>
-    </div>
-
-    <div class="card">
-        <h2>Letöltés</h2>
-        <p>Töltsd le a klienst és kezdj játszani.</p>
-        <button class="blue">Letöltés</button>
-    </div>
-
-    <div class="card">
-        <h2>Bányaközpont</h2>
-        <p>Vásárlás, rangok és egyéb funkciók.</p>
-        <button class="green">Megnyitás</button>
+    <div>
+        <h1>K3DSMP Minecraft Szerver</h1>
+        <p>Csatlakozz most!</p>
+        <button class="green" onclick="copyIP()">IP másolása</button>
     </div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer-bar">
-    Hasznos tudnivalók – Olvasd el a gyakori kérdéseket!
+<!-- LOGIN -->
+<div id="loginBox" class="box hidden">
+    <h2>Bejelentkezés</h2>
+    <input id="loginUser" placeholder="Felhasználónév"><br><br>
+    <input id="loginPass" type="password" placeholder="Jelszó"><br><br>
+    <button class="blue" onclick="login()">Belépés</button>
 </div>
+
+<!-- REGISTER -->
+<div id="registerBox" class="box hidden">
+    <h2>Regisztráció</h2>
+    <input id="regUser" placeholder="Felhasználónév"><br><br>
+    <input id="regPass" type="password" placeholder="Jelszó"><br><br>
+    <button class="red" onclick="register()">Regisztrálok</button>
+</div>
+
+<!-- USER PANEL -->
+<div id="userPanel" class="box hidden">
+    <h2>Üdv, <span id="userName"></span>!</h2>
+    <p>Ez a Bányaközpont (demo)</p>
+    <button onclick="buyRank()">VIP vásárlás (fake)</button>
+    <button onclick="logout()">Kijelentkezés</button>
+</div>
+
+<script>
+
+// IP másolás
+function copyIP() {
+    navigator.clipboard.writeText("play.k3dsmp.hu");
+    alert("IP kimásolva!");
+}
+
+// UI
+function showLogin() {
+    loginBox.classList.remove("hidden");
+    registerBox.classList.add("hidden");
+}
+function showRegister() {
+    registerBox.classList.remove("hidden");
+    loginBox.classList.add("hidden");
+}
+
+// REGISZTRÁCIÓ
+function register() {
+    let user = regUser.value;
+    let pass = regPass.value;
+
+    if(!user || !pass) {
+        alert("Tölts ki mindent!");
+        return;
+    }
+
+    localStorage.setItem(user, pass);
+    alert("Sikeres regisztráció!");
+}
+
+// LOGIN
+function login() {
+    let user = loginUser.value;
+    let pass = loginPass.value;
+
+    let saved = localStorage.getItem(user);
+
+    if(saved === pass) {
+        userPanel.classList.remove("hidden");
+        loginBox.classList.add("hidden");
+        userName.innerText = user;
+    } else {
+        alert("Hibás adatok!");
+    }
+}
+
+// LOGOUT
+function logout() {
+    userPanel.classList.add("hidden");
+}
+
+// FAKE VÁSÁRLÁS
+function buyRank() {
+    alert("VIP megvéve! (nem igazi 😄)");
+}
+
+</script>
 
 </body>
 </html>
