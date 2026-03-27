@@ -1,198 +1,187 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <title>K3D SMP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>K3D SMP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        body {
-            background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
-            color: white;
-            overflow-x: hidden;
-        }
+body {
+    background: #0a0a12;
+    color: white;
+    overflow-x: hidden;
+}
 
-        /* Animated background */
-        body::before {
-            content: "";
-            position: fixed;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, #00adb5, #8a2be2, #ff00cc);
-            animation: moveBg 10s linear infinite;
-            z-index: -1;
-            opacity: 0.1;
-        }
+/* HERO */
+.hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+}
 
-        @keyframes moveBg {
-            0% { transform: translate(0,0); }
-            100% { transform: translate(-50%, -50%); }
-        }
+/* háttér gradient overlay */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(10,10,20,0.2) 0%,
+        rgba(10,10,20,0.6) 50%,
+        rgba(10,10,20,1) 100%
+    );
+    z-index: 1;
+}
 
-        header {
-            text-align: center;
-            padding: 30px;
-        }
+/* LOGO */
+.logo {
+    width: 260px;
+    z-index: 2;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 40px #8a2be2);
+}
 
-        header img {
-            width: 120px;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px #00adb5);
-        }
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+.hero h1 {
+    font-size: 60px;
+    margin-top: 20px;
+    z-index: 2;
+    background: linear-gradient(90deg, #00adb5, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        header h1 {
-            margin-top: 10px;
-            font-size: 40px;
-            text-shadow: 0 0 20px #00adb5;
-        }
+/* BUTTONS */
+.btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg, #00adb5, #8a2be2);
+    color: white;
+    font-size: 16px;
+    transition: 0.3s;
+    z-index: 2;
+}
 
-        nav {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.btn:hover {
+    transform: scale(1.1);
+}
 
-        nav a {
-            margin: 0 15px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            position: relative;
-        }
+/* SECTION */
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
 
-        nav a::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: #00adb5;
-            left: 0;
-            bottom: -5px;
-            transition: 0.3s;
-        }
+.section h2 {
+    font-size: 35px;
+    margin-bottom: 30px;
+}
 
-        nav a:hover::after {
-            width: 100%;
-        }
+/* UPDATE CARD */
+.update-box {
+    max-width: 800px;
+    margin: auto;
+    background: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
 
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-        }
+/* GALLERY */
+.gallery {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
 
-        .hero h2 {
-            font-size: 36px;
-            animation: glow 2s infinite alternate;
-        }
+.gallery img {
+    width: 300px;
+    border-radius: 15px;
+    transition: 0.3s;
+    box-shadow: 0 0 15px black;
+}
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #00adb5; }
-            to { text-shadow: 0 0 25px #8a2be2; }
-        }
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #8a2be2;
+}
 
-        .cards {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.6;
+}
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            width: 260px;
-            text-align: center;
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-
-        .card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 0 25px #00adb5;
-        }
-
-        button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #00adb5, #8a2be2);
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            transform: scale(1.1);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            opacity: 0.7;
-        }
-    </style>
+</style>
 </head>
+
 <body>
 
-<header>
-    <img src="tungi.png" alt="K3D SMP Logo">
-    <h1>K3D SMP</h1>
-</header>
-
-<nav>
-    <a href="#">Főoldal</a>
-    <a href="#">Szerver</a>
-    <a href="#">Discord</a>
-</nav>
-
+<!-- HERO -->
 <section class="hero">
-    <h2>🔥 A legjobb magyar SMP élmény 🔥</h2>
-    <p>Csatlakozz most és kezdődjön a kaland!</p>
+    <img src="tungi.png" class="logo">
+    <h1>K3D SMP</h1>
+    
+    <button class="btn" onclick="copyIP()">🎮 Csatlakozás</button>
+    <button class="btn" onclick="openDiscord()">💬 Discord</button>
 </section>
 
-<div class="cards">
-    <div class="card">
-        <h3>🌍 IP</h3>
-        <p>play.k3dsmp.hu</p>
-        <button onclick="copyIP()">Másolás</button>
+<!-- UPDATE -->
+<section class="section">
+    <h2>🔥 Legújabb Update</h2>
+
+    <div class="update-box">
+        <h3># A KARBANTARTÁSNAK VÉGE VAN! 🎉</h3>
+        <p>
+        Újra megnyitottuk a Minecraft szervert, és egy vadonatúj Húsvéti frissítéssel készültünk nektek! 🐰🌸<br><br>
+        Ez egy Economy + Húsvéti Update, amelyben bekerült az eladás rendszer és a bolt is! 💰🛒
+        </p>
     </div>
 
-    <div class="card">
-        <h3>💬 Discord</h3>
-        <p>Csatlakozz a közösséghez!</p>
-        <button onclick="alert('Discord hamarosan!')">Megnyitás</button>
+    <!-- KÉPEK -->
+    <div class="gallery">
+        <img src="kep.png" alt="Bázis">
+        <img src="kep2.png" alt="Shop">
+        <img src="kep3.png" alt="Kastély">
     </div>
-
-    <div class="card">
-        <h3>🛠️ Frissítések</h3>
-        <p>Eventek, új cuccok, folyamatos fejlődés!</p>
-    </div>
-</div>
+</section>
 
 <footer>
-    © 2026 K3D SMP
+© 2026 K3D SMP
 </footer>
 
 <script>
 function copyIP() {
     navigator.clipboard.writeText("play.k3dsmp.hu");
     alert("IP kimásolva!");
+}
+
+function openDiscord() {
+    window.open("https://discord.gg/XscqNmjEzu");
 }
 </script>
 
