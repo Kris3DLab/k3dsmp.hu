@@ -2,357 +2,198 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <title>K3D SMP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K3DSMP | Prémium Magyar Minecraft SMP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --primary: #ff9800;
-            --primary-glow: rgba(255, 152, 0, 0.4);
-            --bg: #0b0f1a;
-            --surface: #161b2c;
-            --text: #f1f5f9;
-            --text-dim: #94a3b8;
-            --success: #10b981;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(255, 152, 0, 0.1) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(30, 64, 175, 0.1) 0px, transparent 50%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+            background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
+            color: white;
             overflow-x: hidden;
         }
 
-        /* NAVIGATION */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: rgba(11, 15, 26, 0.7);
-            backdrop-filter: blur(15px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: pointer; }
-        .logo span { color: var(--primary); }
-
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dim);
-            font-weight: 600;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--primary); }
-
-        .user-status {
-            padding: 8px 16px;
-            background: var(--surface);
-            border-radius: 100px;
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 13px;
-        }
-
-        /* HERO */
-        .hero {
-            padding: 100px 20px 60px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
-        }
-
-        .ip-box {
-            display: inline-flex;
-            background: var(--surface);
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-top: 20px;
-        }
-
-        .ip-text {
-            padding: 10px 20px;
-            font-family: monospace;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .copy-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .copy-btn:hover { background: #e68a00; transform: scale(1.02); }
-
-        /* GRID */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 60px 8%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .card h2 { margin-bottom: 12px; font-size: 22px; }
-        .card p { color: var(--text-dim); margin-bottom: 24px; font-size: 15px; }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.2s;
-        }
-
-        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: white; }
-        .btn-outline:hover { background: rgba(255,255,255,0.05); }
-
-        /* MODALS */
-        .modal {
+        /* Animated background */
+        body::before {
+            content: "";
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, #00adb5, #8a2be2, #ff00cc);
+            animation: moveBg 10s linear infinite;
+            z-index: -1;
+            opacity: 0.1;
         }
 
-        .modal-content {
-            background: var(--surface);
-            width: 90%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+        @keyframes moveBg {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        header {
+            text-align: center;
+            padding: 30px;
+        }
+
+        header img {
+            width: 120px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px #00adb5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        header h1 {
+            margin-top: 10px;
+            font-size: 40px;
+            text-shadow: 0 0 20px #00adb5;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
             position: relative;
         }
 
-        .modal-content h3 { font-size: 24px; margin-bottom: 8px; }
-        .modal-content p { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 16px;
-            background: #0b0f1a;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #00adb5;
+            left: 0;
+            bottom: -5px;
+            transition: 0.3s;
         }
 
-        input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        nav a:hover::after {
+            width: 100%;
+        }
 
-        .footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
 
-        .logged-in { color: var(--success) !important; font-weight: 800 !important; }
+        .hero h2 {
+            font-size: 36px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00adb5; }
+            to { text-shadow: 0 0 25px #8a2be2; }
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            width: 260px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 0 25px #00adb5;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #00adb5, #8a2be2);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="logo" onclick="location.reload()">K3D<span>SMP</span></div>
-    <div class="nav-links" id="navContent">
-        <a href="javascript:void(0)" onclick="openModal('loginModal')">Bejelentkezés</a>
-        <a href="javascript:void(0)" onclick="openModal('registerModal')" style="color: var(--primary)">Regisztráció</a>
-    </div>
+<header>
+    <img src="tungi.png" alt="K3D SMP Logo">
+    <h1>K3D SMP</h1>
+</header>
+
+<nav>
+    <a href="#">Főoldal</a>
+    <a href="#">Szerver</a>
+    <a href="#">Discord</a>
 </nav>
 
 <section class="hero">
-    <div class="status-badge">
-        <div class="status-dot"></div>
-        <span id="playerCount">Szerver online: 42 játékos</span>
-    </div>
-    <h1>Építs. Túlélj.<br>Urald a blokkvilágot.</h1>
-    <p>A legmenőbb magyar Survival SMP szerver – ahol a közösség építi a legendákat. Creeper-biztos szórakozás, prémium rangok és igazi kaland vár rád!</p>
-    
-    <div class="ip-box">
-        <div class="ip-text" id="serverIP">play.k3dsmp.hu</div>
-        <button class="copy-btn" onclick="copyIP()">IP MÁSOLÁSA</button>
-    </div>
+    <h2>🔥 A legjobb magyar SMP élmény 🔥</h2>
+    <p>Csatlakozz most és kezdődjön a kaland!</p>
 </section>
 
-<div class="grid">
+<div class="cards">
     <div class="card">
-        <h2>Kezdj neki most!</h2>
-        <p>Hozz létre ingyenes fiókot, szinkronizáld a rangjaidat, statisztikáidat és építsd tovább a legendádat a szerveren.</p>
-        <button class="btn" style="background: #ef4444; color: white;" onclick="openModal('registerModal')">Fiók létrehozása</button>
-    </div>
-
-    <div class="card">
-        <h2>Optimalizált Kliens</h2>
-        <p>Töltsd le a saját K3DSMP Launchert a maximális FPS-ért és extra funkciókért. Nincs több lag, csak tiszta block-építés!</p>
-        <button class="btn btn-outline" onclick="window.alert('Letöltés elindult... (hamarosan valódi link)')">Letöltés .EXE</button>
+        <h3>🌍 IP</h3>
+        <p>play.k3dsmp.hu</p>
+        <button onclick="copyIP()">Másolás</button>
     </div>
 
     <div class="card">
-        <h2>Bányaközpont (Webshop)</h2>
-        <p>Vásárolj prémium rangokat, speciális itemeket, kulcsokat és egyedi kozmetikumokat. Támogasd a szervert és szerezz előnyöket!</p>
-        <button class="btn" style="background: var(--success); color: white;" onclick="window.alert('A webshop hamarosan megnyílik!')">Webshop megnyitása</button>
+        <h3>💬 Discord</h3>
+        <p>Csatlakozz a közösséghez!</p>
+        <button onclick="alert('Discord hamarosan!')">Megnyitás</button>
+    </div>
+
+    <div class="card">
+        <h3>🛠️ Frissítések</h3>
+        <p>Eventek, új cuccok, folyamatos fejlődés!</p>
     </div>
 </div>
 
-<div id="loginModal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-        <h3>Üdv újra a blokkvilágban!</h3>
-        <p>Jelentkezz be a fiókodba és folytasd az építkezést.</p>
-        <input type="text" id="lUser" placeholder="Felhasználónév">
-        <input type="password" id="lPass" placeholder="Jelszó">
-        <button class="btn" style="background: var(--primary); color: white;" onclick="handleLogin()">Bejelentkezés</button>
-    </div>
-</div>
-
-<div id="registerModal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-        <h3>Csatlakozz a közösséghez!</h3>
-        <p>Hozz létre fiókot és lépj be a K3DSMP világába. Készen állsz az építésre?</p>
-        <input type="text" id="rUser" placeholder="Felhasználónév">
-        <input type="password" id="rPass" placeholder="Jelszó">
-        <button class="btn" style="background: var(--primary); color: white;" onclick="handleRegister()">Világot építeni!</button>
-    </div>
-</div>
-
-<footer class="footer">
-    K3DSMP &copy; 2026 • Építve a magyar Minecraft közösségnek. Minden jog fenntartva.
+<footer>
+    © 2026 K3D SMP
 </footer>
 
 <script>
-    function copyIP() {
-        const ip = document.getElementById('serverIP').innerText;
-        navigator.clipboard.writeText(ip);
-        const btn = document.querySelector('.copy-btn');
-        btn.innerText = "MÁSOLVA!";
-        btn.style.background = "#10b981";
-        setTimeout(() => {
-            btn.innerText = "IP MÁSOLÁSA";
-            btn.style.background = "var(--primary)";
-        }, 2000);
-    }
-
-    function openModal(id) {
-        document.getElementById(id).style.display = 'flex';
-    }
-
-    function closeModal(e) {
-        if(e.target.classList.contains('modal')) {
-            e.target.style.display = 'none';
-        }
-    }
-
-    function handleRegister() {
-        const u = document.getElementById('rUser').value.trim();
-        const p = document.getElementById('rPass').value;
-
-        if(u.length < 3 || p.length < 4) {
-            return alert("A felhasználónév legalább 3, a jelszó legalább 4 karakter hosszú legyen!");
-        }
-
-        localStorage.setItem('user_' + u, p);
-        alert("Sikeres regisztráció! Most már bejelentkezhetsz és elkezdheted az építkezést.");
-        document.getElementById('registerModal').style.display = 'none';
-    }
-
-    function handleLogin() {
-        const u = document.getElementById('lUser').value.trim();
-        const p = document.getElementById('lPass').value;
-
-        const storedPass = localStorage.getItem('user_' + u);
-
-        if(storedPass && storedPass === p) {
-            document.getElementById('loginModal').style.display = 'none';
-            updateUI(u);
-            alert("Üdvözlünk újra a szerveren, " + u + "! 🪓");
-        } else {
-            alert("Hibás felhasználónév vagy jelszó! Próbáld újra.");
-        }
-    }
-
-    function updateUI(username) {
-        const nav = document.getElementById('navContent');
-        nav.innerHTML = `
-            <span class="user-status">Bejelentkezve mint: <b class="logged-in">${username}</b></span>
-            <a href="javascript:void(0)" onclick="location.reload()">Kijelentkezés</a>
-        `;
-    }
-
-    // Játékosszám szimuláció
-    setInterval(() => {
-        const count = Math.floor(Math.random() * (65 - 35 + 1) + 35);
-        document.getElementById('playerCount').innerText = `Szerver online: ${count} bányász`;
-    }, 4500);
+function copyIP() {
+    navigator.clipboard.writeText("play.k3dsmp.hu");
+    alert("IP kimásolva!");
+}
 </script>
 
 </body>
