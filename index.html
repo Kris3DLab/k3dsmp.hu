@@ -2,8 +2,8 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>K3D SMP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K3D SMP</title>
 
 <style>
 * {
@@ -16,117 +16,131 @@
 body {
     background: #0a0a12;
     color: white;
-    overflow-x: hidden;
 }
 
-/* HERO */
+/* HERO FULLSCREEN IMAGE */
 .hero {
     height: 100vh;
-    position: relative;
+    background: url("tungi.png") center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     text-align: center;
-    overflow: hidden;
+    position: relative;
 }
 
-/* háttér gradient overlay */
-.hero::before {
+/* GRADIENT OVERLAY (EZ AZ ÁTMENET) */
+.hero::after {
     content: "";
     position: absolute;
     width: 100%;
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(10,10,20,0.2) 0%,
-        rgba(10,10,20,0.6) 50%,
+        rgba(0,0,0,0.1) 0%,
+        rgba(0,0,0,0.6) 50%,
         rgba(10,10,20,1) 100%
     );
-    z-index: 1;
 }
 
-/* LOGO */
-.logo {
-    width: 260px;
+/* HERO CONTENT */
+.hero-content {
+    position: relative;
     z-index: 2;
-    animation: float 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 40px #8a2be2);
-}
-
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
 }
 
 .hero h1 {
-    font-size: 60px;
-    margin-top: 20px;
-    z-index: 2;
+    font-size: 70px;
     background: linear-gradient(90deg, #00adb5, #8a2be2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* BUTTONS */
 .btn {
     margin-top: 20px;
     padding: 12px 25px;
     border-radius: 12px;
     border: none;
-    cursor: pointer;
     background: linear-gradient(45deg, #00adb5, #8a2be2);
     color: white;
-    font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
-    z-index: 2;
 }
 
 .btn:hover {
     transform: scale(1.1);
 }
 
-/* SECTION */
+/* SECTIONS */
 .section {
-    padding: 60px 20px;
+    padding: 80px 20px;
     text-align: center;
 }
 
 .section h2 {
-    font-size: 35px;
+    font-size: 40px;
     margin-bottom: 30px;
 }
 
-/* UPDATE CARD */
-.update-box {
+/* UPDATE BOX */
+.update {
     max-width: 800px;
     margin: auto;
     background: rgba(255,255,255,0.05);
     padding: 30px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
 }
 
-/* GALLERY */
-.gallery {
+/* FEATURE CARDS */
+.features {
     display: flex;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 30px;
 }
 
-.gallery img {
-    width: 300px;
+.card {
+    width: 280px;
+    padding: 25px;
     border-radius: 15px;
+    background: rgba(255,255,255,0.05);
     transition: 0.3s;
-    box-shadow: 0 0 15px black;
 }
 
-.gallery img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px #8a2be2;
+.card:hover {
+    transform: translateY(-10px);
+}
+
+/* IMAGE SECTIONS */
+.image-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+}
+
+.image-section img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-section::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.image-section h2 {
+    position: relative;
+    z-index: 2;
+    font-size: 50px;
 }
 
 /* FOOTER */
@@ -143,31 +157,51 @@ footer {
 
 <!-- HERO -->
 <section class="hero">
-    <img src="tungi.png" class="logo">
-    <h1>K3D SMP</h1>
-    
-    <button class="btn" onclick="copyIP()">🎮 Csatlakozás</button>
-    <button class="btn" onclick="openDiscord()">💬 Discord</button>
+    <div class="hero-content">
+        <h1>K3D SMP</h1>
+        <button class="btn" onclick="copyIP()">🎮 Csatlakozás</button><br>
+        <button class="btn" onclick="openDiscord()">💬 Discord</button>
+    </div>
 </section>
 
 <!-- UPDATE -->
 <section class="section">
     <h2>🔥 Legújabb Update</h2>
-
-    <div class="update-box">
+    <div class="update">
         <h3># A KARBANTARTÁSNAK VÉGE VAN! 🎉</h3>
         <p>
         Újra megnyitottuk a Minecraft szervert, és egy vadonatúj Húsvéti frissítéssel készültünk nektek! 🐰🌸<br><br>
         Ez egy Economy + Húsvéti Update, amelyben bekerült az eladás rendszer és a bolt is! 💰🛒
         </p>
     </div>
+</section>
 
-    <!-- KÉPEK -->
-    <div class="gallery">
-        <img src="kep.png" alt="Bázis">
-        <img src="kep2.png" alt="Shop">
-        <img src="kep3.png" alt="Kastély">
+<!-- FEATURES -->
+<section class="section">
+    <h2>⚡ Mi található a szerveren?</h2>
+    <div class="features">
+        <div class="card">💰 Economy rendszer</div>
+        <div class="card">🛒 Bolt rendszer</div>
+        <div class="card">🎉 Eventek</div>
     </div>
+</section>
+
+<!-- SHOP -->
+<section class="image-section">
+    <img src="kep2.png">
+    <h2>🛒 Bolt</h2>
+</section>
+
+<!-- BASE -->
+<section class="image-section">
+    <img src="kep.png">
+    <h2>🏠 Bázis</h2>
+</section>
+
+<!-- CASTLE -->
+<section class="image-section">
+    <img src="kep3.png">
+    <h2>🏰 Kastély</h2>
 </section>
 
 <footer>
