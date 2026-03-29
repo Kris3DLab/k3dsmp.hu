@@ -622,7 +622,7 @@
                 <div class="package-card">
                     <div class="package-header">
                         <h3 class="package-name">Basic</h3>
-                        <div class="package-price">1 166 Ft</div>
+                        <div class="package-price">599 Ft</div>
                     </div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> VIP rang</li>
@@ -637,7 +637,7 @@
                 <div class="package-card popular">
                     <div class="package-header">
                         <h3 class="package-name">Premium</h3>
-                        <div class="package-price">2 336 Ft</div>
+                        <div class="package-price">1 299 Ft</div>
                     </div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Premium rang</li>
@@ -652,7 +652,7 @@
                 <div class="package-card">
                     <div class="package-header">
                         <h3 class="package-name">Mester</h3>
-                        <div class="package-price">3 896 Ft</div>
+                        <div class="package-price">2 990 Ft</div>
                     </div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Mester rang</li>
@@ -810,9 +810,9 @@
 
         // Csomag vásárlás - PayPal sandbox
         const packages = {
-            basic:   { name: 'Basic',   amount: '1166.00' },
-            premium: { name: 'Premium', amount: '2336.00' },
-            mester:  { name: 'Mester',  amount: '3896.00' },
+            basic:   { name: 'Basic',   amount: '599.00' },
+            premium: { name: 'Premium', amount: '1299.00' },
+            mester:  { name: 'Mester',  amount: '2990.00' },
         };
 
         function initPayPalButton(containerId, pkg) {
@@ -870,3 +870,4 @@
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 if (targetId && targetId !== '#') {
+  
