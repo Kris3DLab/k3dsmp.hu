@@ -6,7 +6,19 @@
     <title>K3DSMP - Minecraft Szerver</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- PayPal Sandbox SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=HUF&locale=hu_HU"></script>
+    <script>
+        // PayPal SDK dinamikus betöltés hogy biztosan fusson az init után
+        function loadPayPal() {
+            return new Promise((resolve, reject) => {
+                if (window.paypal) { resolve(); return; }
+                const s = document.createElement('script');
+                s.src = 'https://www.paypal.com/sdk/js?client-id=sb&currency=EUR&locale=hu_HU';
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+        }
+    </script>
     <style>
         * {
             margin: 0;
@@ -523,6 +535,36 @@
             opacity: 1;
         }
 
+        /* Scroll animáció */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Scroll reveal animáció */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -587,23 +629,23 @@
     <!-- Szolgáltatások -->
     <section class="services" id="features">
         <div class="container">
-            <h2 class="section-title">Szolgáltatásaink</h2>
+            <h2 class="section-title reveal">Szolgáltatásaink</h2>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card reveal reveal-delay-1">
                     <div class="service-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <h3>Stabil Játék</h3>
                     <p>99.9% elérhetőség, alacsony ping, stabil teljesítmény minden eszközön.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal reveal-delay-2">
                     <div class="service-icon">
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Aktív Közösség</h3>
                     <p>Nagy közösség, események, versenyek és baráti légkör.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal reveal-delay-3">
                     <div class="service-icon">
                         <i class="fas fa-crown"></i>
                     </div>
@@ -617,9 +659,9 @@
     <!-- Shop -->
     <section class="shop" id="shop">
         <div class="container">
-            <h2 class="section-title">Premium Csomagok</h2>
+            <h2 class="section-title reveal">Premium Csomagok</h2>
             <div class="packages-grid">
-                <div class="package-card">
+                <div class="package-card reveal reveal-delay-1">
                     <div class="package-header">
                         <h3 class="package-name">Basic</h3>
                         <div class="package-price">599 Ft</div>
@@ -634,7 +676,7 @@
                     </ul>
                     <div id="paypal-basic" class="paypal-container"></div>
                 </div>
-                <div class="package-card popular">
+                <div class="package-card popular reveal reveal-delay-2">
                     <div class="package-header">
                         <h3 class="package-name">Premium</h3>
                         <div class="package-price">1 299 Ft</div>
@@ -649,7 +691,7 @@
                     </ul>
                     <div id="paypal-premium" class="paypal-container"></div>
                 </div>
-                <div class="package-card">
+                <div class="package-card reveal reveal-delay-3">
                     <div class="package-header">
                         <h3 class="package-name">Mester</h3>
                         <div class="package-price">2 990 Ft</div>
@@ -810,29 +852,19 @@
 
         // Csomag vásárlás - PayPal sandbox
         const packages = {
-            basic:   { name: 'Basic',   amount: '599.00' },
-            premium: { name: 'Premium', amount: '1299.00' },
-            mester:  { name: 'Mester',  amount: '2990.00' },
+            basic:   { name: 'Basic',   amount: '1.54' },
+            premium: { name: 'Premium', amount: '3.33' },
+            mester:  { name: 'Mester',  amount: '7.67' },
         };
 
         function initPayPalButton(containerId, pkg) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
             paypal.Buttons({
-                style: {
-                    shape: 'pill',
-                    color: 'gold',
-                    layout: 'horizontal',
-                    label: 'pay',
-                    tagline: false,
-                },
+                style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'pay', tagline: false },
                 createOrder: function(data, actions) {
                     return actions.order.create({
-                        purchase_units: [{
-                            description: 'K3DSMP – ' + pkg.name + ' csomag',
-                            amount: {
-                                currency_code: 'HUF',
-                                value: pkg.amount,
-                            }
-                        }]
+                        purchase_units: [{ description: 'K3DSMP – ' + pkg.name + ' csomag', amount: { currency_code: 'EUR', value: pkg.amount } }]
                     });
                 },
                 onApprove: function(data, actions) {
@@ -840,28 +872,25 @@
                         showToast('✅ Fizetés sikeres! Köszönjük, ' + (details.payer.name.given_name || '') + '!');
                     });
                 },
-                onError: function(err) {
-                    showToast('❌ PayPal hiba történt. Próbáld újra!');
-                    console.error(err);
-                },
-                onCancel: function() {
-                    showToast('ℹ️ Fizetés megszakítva.');
-                }
-            }).render('#' + containerId);
+                onError: function(err) { showToast('❌ PayPal hiba. Próbáld újra!'); console.error(err); },
+                onCancel: function() { showToast('ℹ️ Fizetés megszakítva.'); }
+            }).render('#' + containerId).catch(function(err) {
+                console.error('PayPal render error:', err);
+            });
         }
 
-        // PayPal gombok inicializálása
-        window.addEventListener('load', function() {
-            if (typeof paypal !== 'undefined') {
+        // PayPal betöltés és init
+        window.addEventListener('DOMContentLoaded', function() {
+            loadPayPal().then(function() {
                 initPayPalButton('paypal-basic',   packages.basic);
                 initPayPalButton('paypal-premium', packages.premium);
                 initPayPalButton('paypal-mester',  packages.mester);
-            } else {
+            }).catch(function() {
                 ['paypal-basic','paypal-premium','paypal-mester'].forEach(id => {
-                    document.getElementById(id).innerHTML =
-                        '<p style="color:#f66;font-size:0.85rem;padding:8px">⚠️ PayPal nem töltött be. Ellenőrizd az internetkapcsolatod.</p>';
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '<p style="color:#f66;font-size:0.85rem;padding:8px;text-align:center">⚠️ PayPal nem töltött be.<br>Ellenőrizd az internetkapcsolatod.</p>';
                 });
-            }
+            });
         });
 
         // Smooth scrolling
@@ -870,4 +899,22 @@
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 if (targetId && targetId !== '#') {
-  
+                    const el = document.querySelector(targetId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Scroll reveal animáció
+        const revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
