@@ -554,8 +554,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzNkZGM1YSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bS0yIDE1SDR2LTJoNnYyem04LTJoNnYtMmgtNnYyem0tOC00SDR2LTJoNnYyem04LTJoNnYtMmgtNnYyem0tNiAyaDJ2LTJoLTJ2MnptMTIgMGgydi0yaC0ydjJ6bS02LTJoMnYtMmgtMnYyeiIvPjwvc3ZnPg==" alt="K3DSMP Logo">
-                    <h1>K3DSMP</h1>
+                    <img src="tungi.png" alt="K3DSMP Logo" style="height: 60px; width: auto;">
                 </div>
                 <nav>
                     <ul>
@@ -740,7 +739,7 @@
                     <h3>Kapcsolat</h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-server" style="color:var(--green); margin-right:6px"></i> IP: play.k3dsmp.hu</li>
-                        <li><i class="fas fa-envelope" style="color:var(--green); margin-right:6px"></i> admin@k3dsmp.hu</li>
+                        <li><i class="fas fa-envelope" style="color:var(--green); margin-right:6px"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0160656c686f416a3265726c712f6974">[email&#160;protected]</a></li>
                         <li><i class="fab fa-discord" style="color:var(--green); margin-right:6px"></i> Discord: k3dsmp</li>
                     </ul>
                 </div>
@@ -751,7 +750,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Modal megnyitás/zárás
         function openModal(type) {
             const id = type === 'login' ? 'loginModal' : 'registerModal';
@@ -871,11 +870,3 @@
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 if (targetId && targetId !== '#') {
-                    const el = document.querySelector(targetId);
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
-</body>
-</html>
