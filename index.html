@@ -544,19 +544,6 @@
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -611,7 +598,7 @@
                 <i class="fas fa-server"></i> IP: play.k3dsmp.hu &nbsp;<i class="fas fa-copy" style="font-size:0.9em; opacity:0.7"></i>
             </div>
             <br>
-            <button class="btn btn-register" style="font-size: 1.2rem; padding: 15px 35px;" onclick="showToast('Csatlakozz a Discord szerverünkhöz! 🎮')">Csatlakozz Most!</button>
+            <button class="btn btn-register" style="font-size: 1.2rem; padding: 15px 35px;" onclick="window.open('https://discord.gg/AzSspzCVXN', '_blank')">Csatlakozz Most!</button>
         </div>
     </section>
 
@@ -656,12 +643,10 @@
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> VIP rang</li>
                         <li><i class="fas fa-check"></i> Speciális szín a chatben</li>
-                        <li><i class="fas fa-check"></i> +2 extra teleport</li>
-                        <li><i class="fas fa-check"></i> Egyedi névtag</li>
-                        <li><i class="fas fa-times"></i> Ingyenes építőkockák</li>
-                        <li><i class="fas fa-times"></i> Extra rang</li>
+                        <li><i class="fas fa-check"></i> 12 Gyémánt</li>
+                        <li><i class="fas fa-check"></i> 30 Húsvéti pénz</li>
                     </ul>
-                    <div id="paypal-basic" class="paypal-container"></div>
+                    <div id="paypal-basic" class="paypal-container" data-package="Basic"></div>
                 </div>
                 <div class="package-card popular reveal reveal-delay-2">
                     <div class="package-header">
@@ -671,12 +656,11 @@
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Premium rang</li>
                         <li><i class="fas fa-check"></i> Teljes színválaszték</li>
-                        <li><i class="fas fa-check"></i> Korlátlan teleport</li>
-                        <li><i class="fas fa-check"></i> Egyedi névtag + effekt</li>
-                        <li><i class="fas fa-check"></i> Napi 1000 ingyenes blokk</li>
-                        <li><i class="fas fa-check"></i> Extra rang 1 hónapra</li>
+                        <li><i class="fas fa-check"></i> Extra rang a Discordra 1 hónapra</li>
+                        <li><i class="fas fa-check"></i> 45 Húsvéti pénz</li>
+                        <li><i class="fas fa-check"></i> 30 Gyémánt</li>
                     </ul>
-                    <div id="paypal-premium" class="paypal-container"></div>
+                    <div id="paypal-premium" class="paypal-container" data-package="Premium"></div>
                 </div>
                 <div class="package-card reveal reveal-delay-3">
                     <div class="package-header">
@@ -685,14 +669,14 @@
                     </div>
                     <ul class="package-features">
                         <li><i class="fas fa-check"></i> Mester rang</li>
-                        <li><i class="fas fa-check"></i> Minden szín + animációk</li>
-                        <li><i class="fas fa-check"></i> Korlátlan teleport</li>
-                        <li><i class="fas fa-check"></i> Egyedi névtag + animáció</li>
-                        <li><i class="fas fa-check"></i> Napi 5000 ingyenes blokk</li>
+                        <li><i class="fas fa-check"></i> Mester rang a Discordra</li>
+                        <li><i class="fas fa-check"></i> Minden szín</li>
                         <li><i class="fas fa-check"></i> Extra rang 3 hónapra</li>
                         <li><i class="fas fa-check"></i> Különleges képességek</li>
+                        <li><i class="fas fa-check"></i> 2x64 Húsvéti pénz</li>
+                        <li><i class="fas fa-check"></i> 3x64 Gyémánt</li>
                     </ul>
-                    <div id="paypal-mester" class="paypal-container"></div>
+                    <div id="paypal-mester" class="paypal-container" data-package="Mester"></div>
                 </div>
             </div>
         </div>
@@ -745,7 +729,7 @@
                     <h3>K3DSMP</h3>
                     <p style="color:#aaa; line-height:1.7">A legjobb Minecraft élmény Magyarországon! Stabil, biztonságos és izgalmas játékkörnyezet.</p>
                     <div class="social-icons">
-                        <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="https://discord.gg/AzSspzCVXN" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
                         <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
                         <a href="#" title="Twitch"><i class="fab fa-twitch"></i></a>
                         <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -765,8 +749,7 @@
                     <h3>Kapcsolat</h3>
                     <ul class="footer-links">
                         <li><i class="fas fa-server" style="color:var(--green); margin-right:6px"></i> IP: play.k3dsmp.hu</li>
-                        <li><i class="fas fa-envelope" style="color:var(--green); margin-right:6px"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0160656c686f416a3265726c712f6974">[email&#160;protected]</a></li>
-                        <li><i class="fab fa-discord" style="color:var(--green); margin-right:6px"></i> Discord: k3dsmp</li>
+                        <li><i class="fab fa-discord" style="color:var(--green); margin-right:6px"></i> <a href="https://discord.gg/AzSspzCVXN" target="_blank">Discord szerver</a></li>
                     </ul>
                 </div>
             </div>
@@ -776,7 +759,9 @@
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
+        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1491150539034071232/K9JtzVtQ4636LAalLXbaO5gFF1NHkOG9GCPGQTHop5VKIYXL9gUHvUF4jf2DGHu1MPnI';
+
         function openModal(type) {
             const id = type === 'login' ? 'loginModal' : 'registerModal';
             document.getElementById(id).style.display = 'flex';
@@ -802,12 +787,46 @@
             toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
         }
 
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('k3dsmp_users') || '[]');
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('k3dsmp_users', JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            return JSON.parse(sessionStorage.getItem('k3dsmp_session') || 'null');
+        }
+
+        function setCurrentUser(user) {
+            sessionStorage.setItem('k3dsmp_session', JSON.stringify(user));
+            updateAuthButtons();
+        }
+
+        function updateAuthButtons() {
+            const user = getCurrentUser();
+            const container = document.querySelector('.auth-buttons');
+            if (user) {
+                container.innerHTML = '<span style="color:var(--green);font-weight:600;display:flex;align-items:center;gap:10px;"><i class="fas fa-user"></i> ' + user.username + '</span><button class="btn btn-login" onclick="doLogout()">Kijelentkezés</button>';
+            }
+        }
+
         function doLogin() {
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
             if (!u || !p) { showToast('⚠️ Töltsd ki az összes mezőt!'); return; }
-            showToast('✅ Bejelentkezés sikeres! Üdv, ' + u + '!');
-            closeModal('loginModal');
+            
+            const users = getUsers();
+            const user = users.find(x => x.username === u && x.password === p);
+            
+            if (user) {
+                setCurrentUser(user);
+                showToast('✅ Bejelentkezés sikeres! Üdv, ' + u + '!');
+                closeModal('loginModal');
+            } else {
+                showToast('❌ Hibás felhasználónév vagy jelszó!');
+            }
         }
 
         function doRegister() {
@@ -815,10 +834,34 @@
             const e = document.getElementById('regEmail').value.trim();
             const p = document.getElementById('regPassword').value;
             const c = document.getElementById('regConfirmPassword').value;
+            
             if (!u || !e || !p || !c) { showToast('⚠️ Töltsd ki az összes mezőt!'); return; }
+            if (u.length < 3) { showToast('⚠️ A felhasználónév minimum 3 karakter!'); return; }
+            if (!e.includes('@') || !e.includes('.')) { showToast('⚠️ Érvényes email címet adj meg!'); return; }
+            if (p.length < 6) { showToast('⚠️ A jelszó minimum 6 karakter!'); return; }
             if (p !== c) { showToast('❌ A két jelszó nem egyezik!'); return; }
+            
+            const users = getUsers();
+            if (users.find(x => x.username === u)) {
+                showToast('❌ Ez a felhasználónév már foglalt!');
+                return;
+            }
+            if (users.find(x => x.email === e)) {
+                showToast('❌ Ez az email már regisztrálva van!');
+                return;
+            }
+            
+            users.push({ username: u, email: e, password: p });
+            saveUsers(users);
+            setCurrentUser({ username: u });
             showToast('✅ Regisztráció sikeres! Üdv, ' + u + '!');
             closeModal('registerModal');
+        }
+
+        function doLogout() {
+            sessionStorage.removeItem('k3dsmp_session');
+            updateAuthButtons();
+            showToast('👋 Sikeresen kijelentkeztél!');
         }
 
         function copyIP() {
@@ -827,6 +870,23 @@
             }).catch(() => {
                 showToast('📋 IP: play.k3dsmp.hu');
             });
+        }
+
+        async function sendWebhook(packageName) {
+            try {
+                await fetch(DISCORD_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: '🛒 Új vásárlás!',
+                            description: 'Valaki megvásárolta a **' + packageName + '** csomagot!',
+                            color: 5763714,
+                            timestamp: new Date().toISOString()
+                        }]
+                    })
+                });
+            } catch (e) { console.log('Webhook hiba:', e); }
         }
 
         const packages = {
@@ -847,7 +907,8 @@
                 },
                 onApprove: function(data, actions) {
                     return actions.order.capture().then(function(details) {
-                        showToast('✅ Fizetés sikeres! Köszönjük, ' + (details.payer.name.given_name || '') + '!');
+                        sendWebhook(pkg.name);
+                        showToast('✅ Köszönjük a vásárlást!');
                     });
                 },
                 onError: function(err) { showToast('❌ PayPal hiba. Próbáld újra!'); console.error(err); },
@@ -858,6 +919,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', function() {
+            updateAuthButtons();
             loadPayPal().then(function() {
                 initPayPalButton('paypal-basic',   packages.basic);
                 initPayPalButton('paypal-premium', packages.premium);
