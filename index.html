@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K3DSMP - Minecraft Szerver</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PayPal Sandbox SDK -->
+    <!-- IDE ÍRD BE A SAJÁT PAYPAL CLIENT ID-DAT (https://developer.paypal.com/dashboard) -->
     <script>
-        // PayPal SDK dinamikus betöltés hogy biztosan fusson az init után
+        const PAYPAL_CLIENT_ID = 'AXTqQtJ_PmhXPazLmGTS29Y08ROVr2bbaLC7WQv3KoU4HOYL2czH3Rj8t-1PDmrHo0pRdYIdlXfO_bhJ'; // <-- EZT CSERÉLD KI!
+        
         function loadPayPal() {
             return new Promise((resolve, reject) => {
                 if (window.paypal) { resolve(); return; }
                 const s = document.createElement('script');
-                s.src = 'https://www.paypal.com/sdk/js?client-id=sb&currency=EUR&locale=hu_HU';
+                s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=EUR&locale=hu_HU';
                 s.onload = resolve;
                 s.onerror = reject;
                 document.head.appendChild(s);
@@ -47,7 +48,6 @@
             padding: 20px;
         }
 
-        /* Fejléc */
         header {
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(12px);
@@ -147,7 +147,6 @@
             box-shadow: 0 5px 20px var(--green-glow);
         }
 
-        /* Fő szakasz */
         .hero {
             text-align: center;
             padding: 100px 20px;
@@ -201,7 +200,6 @@
             box-shadow: 0 0 35px var(--green-glow);
         }
 
-        /* Szolgáltatások */
         .services {
             padding: 80px 0;
         }
@@ -250,7 +248,6 @@
             color: #a8ff78;
         }
 
-        /* Shop */
         .shop {
             padding: 80px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -362,7 +359,6 @@
             transform: translateY(-2px);
         }
 
-        /* Bejelentkezés/Regisztráció Modal */
         .modal {
             display: none;
             position: fixed;
@@ -433,7 +429,6 @@
             background: rgba(61, 220, 90, 0.12);
         }
 
-        /* Lábléc */
         footer {
             background: rgba(0, 0, 0, 0.85);
             padding: 40px 0 20px;
@@ -513,7 +508,6 @@
             overflow: hidden;
         }
 
-        /* Toast értesítő */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -535,7 +529,6 @@
             opacity: 1;
         }
 
-        /* Scroll animáció */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -551,7 +544,6 @@
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
-        /* Scroll reveal animáció */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -588,10 +580,8 @@
 </head>
 <body>
 
-    <!-- Toast értesítő -->
     <div class="toast" id="toast"></div>
 
-    <!-- Fejléc -->
     <header>
         <div class="container">
             <div class="header-content">
@@ -613,7 +603,6 @@
         </div>
     </header>
 
-    <!-- Fő szakasz -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h2>Üdvözöl a K3DSMP Minecraft Szerver!</h2>
@@ -626,7 +615,6 @@
         </div>
     </section>
 
-    <!-- Szolgáltatások -->
     <section class="services" id="features">
         <div class="container">
             <h2 class="section-title reveal">Szolgáltatásaink</h2>
@@ -656,7 +644,6 @@
         </div>
     </section>
 
-    <!-- Shop -->
     <section class="shop" id="shop">
         <div class="container">
             <h2 class="section-title reveal">Premium Csomagok</h2>
@@ -711,7 +698,6 @@
         </div>
     </section>
 
-    <!-- Bejelentkezés Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
@@ -728,7 +714,6 @@
         </div>
     </div>
 
-    <!-- Regisztráció Modal -->
     <div class="modal" id="registerModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
@@ -753,7 +738,6 @@
         </div>
     </div>
 
-    <!-- Lábléc -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -793,7 +777,6 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Modal megnyitás/zárás
         function openModal(type) {
             const id = type === 'login' ? 'loginModal' : 'registerModal';
             document.getElementById(id).style.display = 'flex';
@@ -810,7 +793,6 @@
             });
         });
 
-        // Toast értesítő
         let toastTimer;
         function showToast(msg) {
             const t = document.getElementById('toast');
@@ -820,7 +802,6 @@
             toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // Bejelentkezés
         function doLogin() {
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
@@ -829,7 +810,6 @@
             closeModal('loginModal');
         }
 
-        // Regisztráció
         function doRegister() {
             const u = document.getElementById('regUsername').value.trim();
             const e = document.getElementById('regEmail').value.trim();
@@ -841,7 +821,6 @@
             closeModal('registerModal');
         }
 
-        // IP másolás
         function copyIP() {
             navigator.clipboard.writeText('play.k3dsmp.hu').then(() => {
                 showToast('📋 IP másolva: play.k3dsmp.hu');
@@ -850,7 +829,6 @@
             });
         }
 
-        // Csomag vásárlás - PayPal sandbox
         const packages = {
             basic:   { name: 'Basic',   amount: '1.54' },
             premium: { name: 'Premium', amount: '3.33' },
@@ -879,7 +857,6 @@
             });
         }
 
-        // PayPal betöltés és init
         window.addEventListener('DOMContentLoaded', function() {
             loadPayPal().then(function() {
                 initPayPalButton('paypal-basic',   packages.basic);
@@ -893,7 +870,6 @@
             });
         });
 
-        // Smooth scrolling
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -905,7 +881,6 @@
             });
         });
 
-        // Scroll reveal animáció
         const revealObserver = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
