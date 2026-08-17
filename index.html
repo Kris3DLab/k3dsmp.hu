@@ -785,26 +785,12 @@
 
         /* ---------- Bolt: PayPal ---------- */
 
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1538929216702255214/2om61uohcTXJQtClbOCcfQ4gD6Eg760_m8ZAg2Y10esVyzDgOhBgFSJovtNDbK-fdkcu';
-
         async function sendDiscordNotification(purchase) {
             try {
-                await fetch(DISCORD_WEBHOOK_URL, {
+                await fetch('/.netlify/functions/discord-notify', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'K3D SMP Bolt',
-                        embeds: [{
-                            title: 'Új vásárlás!',
-                            color: 3050327,
-                            fields: [
-                                { name: 'Csomag', value: purchase.plan + ' (' + purchase.price + ' Ft)', inline: true },
-                                { name: 'Játékos', value: purchase.user, inline: true },
-                                { name: 'Rendelés', value: purchase.orderId, inline: false }
-                            ],
-                            timestamp: new Date().toISOString()
-                        }]
-                    })
+                    body: JSON.stringify(purchase)
                 });
             } catch (e) {
                 console.error('Discord webhook hiba:', e);
