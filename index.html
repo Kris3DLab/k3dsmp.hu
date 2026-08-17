@@ -3,967 +3,912 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K3DSMP - Minecraft Szerver</title>
+    <title>K3D SMP</title>
+    <link rel="icon" type="image/png" href="tungi-square.png">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- IDE ÍRD BE A SAJÁT PAYPAL CLIENT ID-DAT (https://developer.paypal.com/dashboard) -->
-    <script>
-        const PAYPAL_CLIENT_ID = 'ASm45yetauJuAXiNeWAGZqP3ZKXwF2jZalaaOm15G85q_Iyh1qmzYut-GrJCnFQDuphTwKW4O8HyoKzr'; // <-- EZT CSERÉLD KI!
-        
-        function loadPayPal() {
-            return new Promise((resolve, reject) => {
-                if (window.paypal) { resolve(); return; }
-                const s = document.createElement('script');
-                s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=EUR&locale=hu_HU';
-                s.onload = resolve;
-                s.onerror = reject;
-                document.head.appendChild(s);
-            });
-        }
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.paypal.com/sdk/js?client-id=ASm45yetauJuAXiNeWAGZqP3ZKXwF2jZalaaOm15G85q_Iyh1qmzYut-GrJCnFQDuphTwKW4O8HyoKzr&currency=HUF&locale=hu_HU"></script>
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
-        :root {
-            --green: #3ddc5a;
-            --green-dark: #27a845;
-            --green-glow: rgba(61, 220, 90, 0.4);
-            --green-subtle: rgba(61, 220, 90, 0.12);
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: linear-gradient(135deg, #0a1a0f, #0f2d18, #1a3d20);
-            color: #fff;
+            background-color: #05080a;
+            color: #e4e4e7;
             min-height: 100vh;
+            position: relative;
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 2px solid var(--green);
-            box-shadow: 0 2px 20px var(--green-glow);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            height: 60px;
-            width: auto;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            background: linear-gradient(to right, var(--green), #a8ff78);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px var(--green-glow);
-            letter-spacing: 2px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav a {
-            color: #cceedd;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: color 0.3s;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        nav a:hover {
-            color: var(--green);
-            background: var(--green-subtle);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-login {
-            background: transparent;
-            border: 2px solid var(--green);
-            color: var(--green);
-        }
-
-        .btn-login:hover {
-            background: var(--green);
-            color: #0a1a0f;
-        }
-
-        .btn-register {
-            background: var(--green);
-            color: #0a1a0f;
-            border: 2px solid var(--green);
-            font-weight: 700;
-        }
-
-        .btn-register:hover {
-            background: #a8ff78;
-            border-color: #a8ff78;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px var(--green-glow);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-                        url('tungi.png') no-repeat center center/cover;
-            position: relative;
-            border-bottom: 2px solid var(--green-subtle);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h2 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #a8ff78, var(--green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: none;
-            filter: drop-shadow(0 0 16px var(--green-glow));
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            color: #cceedd;
-        }
-
-        .server-ip {
-            background: var(--green-subtle);
-            border: 2px solid var(--green);
-            border-radius: 30px;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            margin: 20px auto 30px;
-            display: inline-block;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px var(--green-glow);
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 1px;
-        }
-
-        .server-ip:hover {
-            background: rgba(61, 220, 90, 0.2);
-            box-shadow: 0 0 35px var(--green-glow);
-        }
-
-        .services {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: var(--green);
-            text-shadow: 0 0 15px var(--green-glow);
-            letter-spacing: 1px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--green-subtle);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(61, 220, 90, 0.25);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px var(--green-glow);
-            border-color: var(--green);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            color: var(--green);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 8px var(--green-glow));
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #a8ff78;
-        }
-
-        .shop {
-            padding: 80px 0;
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .packages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .package-card {
-            background: var(--green-subtle);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(61, 220, 90, 0.25);
-            transition: all 0.3s;
-        }
-
-        .package-card.popular {
-            border-color: var(--green);
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--green-glow);
-            position: relative;
-        }
-
-        .package-card.popular::before {
-            content: '⭐ LEGNÉPSZERŰBB';
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--green);
-            color: #0a1a0f;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 16px;
-            border-radius: 20px;
-            white-space: nowrap;
-        }
-
-        .package-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px var(--green-glow);
-            border-color: var(--green);
-        }
-
-        .package-card.popular:hover {
-            transform: scale(1.05) translateY(-5px);
-        }
-
-        .package-header {
-            margin-bottom: 20px;
-        }
-
-        .package-name {
-            font-size: 1.8rem;
-            color: var(--green);
-            margin-bottom: 10px;
-        }
-
-        .package-price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #a8ff78;
-        }
-
-        .package-features {
-            list-style: none;
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        .package-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(61, 220, 90, 0.15);
-        }
-
-        .package-features li:last-child {
-            border-bottom: none;
-        }
-
-        .package-features .fa-check {
-            color: var(--green);
-            margin-right: 8px;
-        }
-
-        .package-features .fa-times {
-            color: #666;
-            margin-right: 8px;
-        }
-
-        .btn-buy {
-            background: var(--green);
-            color: #0a1a0f;
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 30px;
-        }
-
-        .btn-buy:hover {
-            background: #a8ff78;
-            box-shadow: 0 5px 20px var(--green-glow);
-            transform: translateY(-2px);
-        }
-
-        .modal {
-            display: none;
+        .bg-image {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: scale(1.06);
+            z-index: -2;
+            pointer-events: none;
         }
 
-        .modal-content {
-            background: linear-gradient(135deg, #0f2d18, #0a1a0f);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            padding: 35px;
-            position: relative;
-            border: 2px solid var(--green);
-            box-shadow: 0 0 40px var(--green-glow);
-        }
-
-        .modal-content h2 {
-            color: var(--green);
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-
-        .close-modal {
+        .bg-image::after {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #aaa;
-            transition: color 0.2s;
+            inset: 0;
+            background: linear-gradient(to bottom, #05080a 0%, rgba(5, 8, 10, 0.65) 45%, rgba(5, 8, 10, 0.4) 75%, rgba(5, 8, 10, 0.6) 100%);
         }
 
-        .close-modal:hover {
-            color: var(--green);
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #a8ff78;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid rgba(61, 220, 90, 0.3);
-            border-radius: 8px;
-            background: rgba(61, 220, 90, 0.07);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            outline: 2px solid var(--green);
-            background: rgba(61, 220, 90, 0.12);
-        }
-
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            padding: 40px 0 20px;
-            margin-top: 80px;
-            border-top: 2px solid var(--green-subtle);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-section h3 {
-            color: var(--green);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-            color: #aaa;
-        }
-
-        .footer-links a {
-            color: #aaa;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--green);
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--green-subtle);
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid rgba(61, 220, 90, 0.3);
-        }
-
-        .social-icons a:hover {
-            background: var(--green);
-            color: #0a1a0f;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px var(--green-glow);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(61, 220, 90, 0.15);
-            color: #666;
-        }
-
-        .paypal-container {
-            margin-top: 10px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .toast {
+        /* Zöld háttér-effektek */
+        body::before {
+            content: '';
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--green);
-            color: #0a1a0f;
-            padding: 14px 24px;
-            border-radius: 10px;
-            font-weight: 700;
-            z-index: 9999;
-            box-shadow: 0 5px 20px var(--green-glow);
-            transform: translateY(100px);
+            top: -20%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.16), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.12), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass {
+            background-color: rgba(255, 255, 255, 0.05);
+            background-image: url('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/stone.png');
+            background-size: 32px 32px;
+            background-blend-mode: multiply;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+        }
+
+        .glass p, .glass span, .glass div, .glass h3 {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-gradient {
+            position: relative;
+            background-color: rgba(16, 185, 129, 0.9);
+            background-image: url('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/emerald_block.png');
+            background-size: 32px 32px;
+            background-blend-mode: overlay;
+            border: 2px solid #065f46;
+            border-bottom-width: 4px;
+            transition: all 0.25s ease;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+            image-rendering: pixelated;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+            filter: brightness(1.1);
+        }
+
+        .btn-ghost {
+            transition: all 0.25s ease;
+        }
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+        .pulse-anim {
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+
+        .copy-btn {
+            transition: all 0.25s ease;
+        }
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background-color: rgba(16, 185, 129, 0.5);
+            background-image: url('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/emerald_block.png');
+            background-size: 32px 32px;
+            background-blend-mode: multiply;
+            box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card {
+            transition: all 0.25s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar {
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .navbar.scrolled {
+            background-color: rgba(10, 20, 15, 0.65);
+            background-image: url('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/deepslate.png');
+            background-size: 32px 32px;
+            background-blend-mode: multiply;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-input {
+            background-color: rgba(0, 0, 0, 0.4);
+            background-image: url('https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/stone.png');
+            background-size: 32px 32px;
+            background-blend-mode: multiply;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: #fff;
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+        .auth-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+        .auth-input::placeholder {
+            color: #71717a;
+        }
+
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             opacity: 0;
-            transition: all 0.4s;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
         }
-
-        .toast.show {
-            transform: translateY(0);
+        .modal-backdrop.open {
             opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            transform: translateY(16px) scale(0.97);
+            transition: transform 0.25s ease;
+        }
+        .modal-backdrop.open .modal-box {
+            transform: translateY(0) scale(1);
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+        #auth-msg {
+            min-height: 1.25rem;
         }
 
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .hidden-tab {
+            display: none !important;
         }
 
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
+        /* Átjárás (transition) a hero és a háttér között */
+        .hero-blur {
+            position: absolute;
+            bottom: -4rem;
+            left: 0;
+            right: 0;
+            height: 14rem;
+            background: linear-gradient(to bottom, rgba(5, 8, 10, 0.35), rgba(5, 8, 10, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
 
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero h2 {
-                font-size: 2.2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="toast" id="toast"></div>
+    <!-- Háttérkép -->
+    <div class="bg-image"></div>
 
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="tungi.png" alt="K3DSMP Logo" style="height:60px; width:60px; object-fit:cover; border-radius:10px;">
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#home"><i class="fas fa-home"></i> Kezdőlap</a></li>
-                        <li><a href="#features"><i class="fas fa-star"></i> Szolgáltatások</a></li>
-                        <li><a href="#shop"><i class="fas fa-shopping-cart"></i> Shop</a></li>
-                    </ul>
-                </nav>
-                <div class="auth-buttons">
-                    <button class="btn btn-login" onclick="openModal('login')">Bejelentkezés</button>
-                    <button class="btn btn-register" onclick="openModal('register')">Regisztráció</button>
-                </div>
+    <!-- Navigáció -->
+    <nav id="navbar" class="navbar fixed top-0 inset-x-0 z-50 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="#" class="font-display text-xl font-bold text-white tracking-tight inline-flex items-center gap-2">
+                <img src="tungi-square.png" alt="K3D SMP" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover">
+                <span>K3D<span class="text-emerald-500">SMP</span></span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm text-zinc-200">
+                <a href="#features" class="hover:text-white transition-colors">Jellemzők</a>
+                <a href="#shop" class="hover:text-white transition-colors">Bolt</a>
+                <a href="#rules" class="hover:text-white transition-colors">Szabályok</a>
+                <a href="#join" class="hover:text-white transition-colors">Csatlakozás</a>
+            </div>
+            <div id="nav-auth" class="flex items-center gap-3"></div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="tungi.png" alt="K3D SMP banner" class="w-full h-full object-cover opacity-25">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#05080a]/60 via-[#05080a]/80 to-[#05080a]"></div>
+        </div>
+        <div class="hero-blur"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-24 text-center">
+            <div class="inline-flex items-center gap-2 bg-black/60 px-4 py-1.5 rounded-full text-xs text-zinc-100 mb-8 ring-1 ring-white/10 backdrop-blur-sm">
+                <span id="status-dot" class="status-dot bg-zinc-400 pulse-anim"></span>
+                <span id="status-text" class="text-zinc-100">Szerver állapot ellenőrzése...</span>
+            </div>
+
+        <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight">
+            Élmény a legjobb
+            <span class="bg-gradient-to-r from-emerald-400 via-green-400 to-lime-400 bg-clip-text text-transparent">SMP</span>
+            szerveren
+        </h1>
+
+        <p class="mt-6 max-w-xl text-zinc-200 text-base sm:text-lg leading-relaxed">
+            K3D SMP — túlélj, építs és fedezz fel egy barátságos közösségben. Bárki csatlakozhat, ingyenes fiókkal is!
+        </p>
+
+        <div class="mt-10 w-full max-w-md">
+            <button id="copy-ip-btn" class="glass rounded-2xl p-3 flex items-center gap-2 w-full cursor-pointer transition-all hover:bg-white/10 active:scale-[0.98]">
+                <i id="copy-icon" class="fa-solid fa-copy text-emerald-400 pl-2"></i>
+                <span class="text-zinc-200 font-mono text-sm sm:text-base select-all">play.k3dsmp.hu</span>
+                <span class="ml-auto text-white text-sm font-semibold px-5 py-2.5 rounded-xl btn-gradient shrink-0">Másolás</span>
+            </button>
+            <div id="copy-feedback" class="text-sm text-emerald-400 mt-3 opacity-0 transition-opacity">
+                ✓ IP cím másolva!
             </div>
         </div>
-    </header>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h2>Üdvözöl a K3DSMP Minecraft Szerver!</h2>
-            <p>Egyedi játékmódokkal, fejlett rendszerekkel és aktív közösséggel rendelkező premium Minecraft szerver.</p>
-            <div class="server-ip" onclick="copyIP()" title="Kattints a másoláshoz!">
-                <i class="fas fa-server"></i> IP: play.k3dsmp.hu &nbsp;<i class="fas fa-copy" style="font-size:0.9em; opacity:0.7"></i>
+        <div class="mt-10 grid grid-cols-3 gap-3 sm:gap-6">
+            <div class="glass rounded-2xl px-4 sm:px-8 py-4">
+                <div class="font-display text-lg sm:text-2xl font-bold text-white">1.21.1</div>
+                <div class="text-[11px] sm:text-xs text-zinc-100 mt-1">Verziótól</div>
             </div>
-            <div class="server-info" style="margin: 20px auto; max-width: 700px;">
-                <div class="server-row" style="background: rgba(61,220,90,0.1); border: 1px solid var(--green); border-radius: 10px; padding: 12px 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <span><i class="fab fa-android" style="color:var(--green); margin-right:8px"></i><strong style="color:var(--green)">Bedrock</strong></span>
-                    <span>join.k3dsmp.hu <span style="color:#888">|</span> Port: <strong>10245</strong> <span style="color:#888">|</span> Verzió: <strong>1.21.11</strong></span>
-                </div>
-                <div class="server-row" style="background: rgba(61,220,90,0.1); border: 1px solid var(--green); border-radius: 10px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <span><i class="fab fa-java" style="color:var(--green); margin-right:8px"></i><strong style="color:var(--green)">Java & Tört</strong></span>
-                    <span>zoology-ignore.gl.joinmc.link <span style="color:#888">|</span> Port: <strong>25565</strong> <span style="color:#888">|</span> Verzió: <strong>1.21.11</strong></span>
-                </div>
-                <p style="font-size: 0.85rem; color: #aaa; margin-top: 8px; text-align: center;">🟢 Bedrockosok Java & Bedrock Edition játékosokkal együtt tudnak játszani!</p>
+            <div class="glass rounded-2xl px-4 sm:px-8 py-4">
+                <div class="font-display text-lg sm:text-2xl font-bold text-white">1.21.11</div>
+                <div class="text-[11px] sm:text-xs text-zinc-100 mt-1">Verzióig</div>
             </div>
-            <br>
-            <button class="btn btn-register" style="font-size: 1.2rem; padding: 15px 35px;" onclick="window.open('https://discord.gg/AzSspzCVXN', '_blank')">Csatlakozz Most!</button>
+            <div class="glass rounded-2xl px-4 sm:px-8 py-4">
+                <div class="font-display text-lg sm:text-2xl font-bold text-white">Paper</div>
+                <div class="text-[11px] sm:text-xs text-zinc-100 mt-1">Szoftver</div>
+            </div>
+        </div>
+
+        <a href="#features" class="mt-12 text-zinc-100 hover:text-white transition-colors">
+            <i class="fa-solid fa-chevron-down animate-bounce text-xl"></i>
+        </a>
         </div>
     </section>
 
-    <section class="services" id="features">
-        <div class="container">
-            <h2 class="section-title reveal">Szolgáltatásaink</h2>
-            <div class="services-grid">
-                <div class="service-card reveal reveal-delay-1">
-                    <div class="service-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Stabil Játék</h3>
-                    <p>99.9% elérhetőség, alacsony ping, stabil teljesítmény minden eszközön.</p>
-                </div>
-                <div class="service-card reveal reveal-delay-2">
-                    <div class="service-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Aktív Közösség</h3>
-                    <p>Nagy közösség, események, versenyek és baráti légkör.</p>
-                </div>
-                <div class="service-card reveal reveal-delay-3">
-                    <div class="service-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3>Premium Tartalom</h3>
-                    <p>Egyedi rangok, játékos funkciók és speciális bónuszok.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Jellemzők -->
+    <section id="features" class="relative z-10 max-w-6xl mx-auto px-6 py-20">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white text-center">Miért a K3D SMP?</h2>
+        <p class="text-zinc-100 text-center mt-3 max-w-md mx-auto">
+            Egy közösség, ahol minden játékosnak jut hely és móka.
+        </p>
 
-    <section class="shop" id="shop">
-        <div class="container">
-            <h2 class="section-title reveal">Premium Csomagok</h2>
-            <div class="packages-grid">
-                <div class="package-card reveal reveal-delay-1">
-                    <div class="package-header">
-                        <h3 class="package-name">Basic</h3>
-                        <div class="package-price">599 Ft</div>
-                    </div>
-                    <ul class="package-features">
-                        <li><i class="fas fa-check"></i> VIP rang</li>
-                        <li><i class="fas fa-check"></i> Speciális szín a chatben</li>
-                        <li><i class="fas fa-check"></i> 12 Gyémánt</li>
-                        <li><i class="fas fa-check"></i> 30 Húsvéti pénz</li>
-                    </ul>
-                    <div id="paypal-basic" class="paypal-container" data-package="Basic"></div>
+        <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="feature-card glass rounded-2xl p-6 text-left">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-4">
+                    <i class="fa-solid fa-person-digging"></i>
                 </div>
-                <div class="package-card popular reveal reveal-delay-2">
-                    <div class="package-header">
-                        <h3 class="package-name">Premium</h3>
-                        <div class="package-price">1 299 Ft</div>
-                    </div>
-                    <ul class="package-features">
-                        <li><i class="fas fa-check"></i> Premium rang</li>
-                        <li><i class="fas fa-check"></i> Teljes színválaszték</li>
-                        <li><i class="fas fa-check"></i> Extra rang a Discordra 1 hónapra</li>
-                        <li><i class="fas fa-check"></i> 45 Húsvéti pénz</li>
-                        <li><i class="fas fa-check"></i> 30 Gyémánt</li>
-                    </ul>
-                    <div id="paypal-premium" class="paypal-container" data-package="Premium"></div>
+                <h3 class="font-display text-white font-semibold mb-2">Klasszikus SMP</h3>
+                <p class="text-sm text-zinc-200 leading-relaxed">Építs, bányássz és élj túl a szíved szerint — bármit magad döntöd el.</p>
+            </div>
+            <div class="feature-card glass rounded-2xl p-6 text-left">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg mb-4">
+                    <i class="fa-solid fa-sack-dollar"></i>
                 </div>
-                <div class="package-card reveal reveal-delay-3">
-                    <div class="package-header">
-                        <h3 class="package-name">Mester</h3>
-                        <div class="package-price">2 990 Ft</div>
-                    </div>
-                    <ul class="package-features">
-                        <li><i class="fas fa-check"></i> Mester rang</li>
-                        <li><i class="fas fa-check"></i> Mester rang a Discordra</li>
-                        <li><i class="fas fa-check"></i> Minden szín</li>
-                        <li><i class="fas fa-check"></i> Extra rang 3 hónapra</li>
-                        <li><i class="fas fa-check"></i> Különleges képességek</li>
-                        <li><i class="fas fa-check"></i> 2x64 Húsvéti pénz</li>
-                        <li><i class="fas fa-check"></i> 3x64 Gyémánt</li>
-                    </ul>
-                    <div id="paypal-mester" class="paypal-container" data-package="Mester"></div>
+                <h3 class="font-display text-white font-semibold mb-2">Gazdaság</h3>
+                <p class="text-sm text-zinc-200 leading-relaxed">Közösségi piac, boltok és üzletelés a többi játékossal.</p>
+            </div>
+            <div class="feature-card glass rounded-2xl p-6 text-left">
+                <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-4">
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
+                <h3 class="font-display text-white font-semibold mb-2">Események</h3>
+                <p class="text-sm text-zinc-200 leading-relaxed">Közös építőversenyek, kalandok és heti programok.</p>
+            </div>
+            <div class="feature-card glass rounded-2xl p-6 text-left">
+                <div class="w-11 h-11 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-4">
+                    <i class="fa-solid fa-earth-europe"></i>
+                </div>
+                <h3 class="font-display text-white font-semibold mb-2">Friss világ</h3>
+                <p class="text-sm text-zinc-200 leading-relaxed">Folyamatosan bővülő világ, mindig van új felfedeznivaló.</p>
             </div>
         </div>
     </section>
 
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h2><i class="fas fa-sign-in-alt"></i> Bejelentkezés</h2>
-            <div class="form-group">
-                <label>Felhasználónév</label>
-                <input type="text" id="loginUsername" placeholder="Felhasználóneved...">
-            </div>
-            <div class="form-group">
-                <label>Jelszó</label>
-                <input type="password" id="loginPassword" placeholder="Jelszavad...">
-            </div>
-            <button class="btn btn-login" style="width:100%; font-size:1.05rem;" onclick="doLogin()">Bejelentkezés</button>
-        </div>
-    </div>
+    <!-- Szabályok -->
+    <section id="rules" class="relative z-10 max-w-3xl mx-auto px-6 py-20">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white text-center">Szabályok</h2>
+        <p class="text-zinc-100 text-center mt-3">
+            Néhány egyszerű szabály, hogy mindenkinek jó legyen a játék.
+        </p>
 
-    <div class="modal" id="registerModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
-            <h2><i class="fas fa-user-plus"></i> Regisztráció</h2>
-            <div class="form-group">
-                <label>Felhasználónév</label>
-                <input type="text" id="regUsername" placeholder="Felhasználóneved...">
+        <div class="mt-12 space-y-4">
+            <div class="glass rounded-2xl p-5 flex items-start gap-4">
+                <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-shield-halved text-sm"></i>
+                </div>
+                <p class="text-white text-sm sm:text-base leading-relaxed">Nincs csalás, hack-kliensek vagy exploitok használata.</p>
             </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="regEmail" placeholder="email@example.com">
+            <div class="glass rounded-2xl p-5 flex items-start gap-4">
+                <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-house-circle-xmark text-sm"></i>
+                </div>
+                <p class="text-white text-sm sm:text-base leading-relaxed">Más játékos bázisát nem raboljuk ki és nem semmisítjük meg.</p>
             </div>
-            <div class="form-group">
-                <label>Jelszó</label>
-                <input type="password" id="regPassword" placeholder="Jelszavad...">
+            <div class="glass rounded-2xl p-5 flex items-start gap-4">
+                <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-hand text-sm"></i>
+                </div>
+                <p class="text-white text-sm sm:text-base leading-relaxed">Zaklatás és tiszteletlen viselkedés tilos.</p>
             </div>
-            <div class="form-group">
-                <label>Jelszó megerősítése</label>
-                <input type="password" id="regConfirmPassword" placeholder="Jelszó újra...">
+            <div class="glass rounded-2xl p-5 flex items-start gap-4">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-heart text-sm"></i>
+                </div>
+                <p class="text-white text-sm sm:text-base leading-relaxed">Légy segítőkész és játsz fair-en!</p>
             </div>
-            <button class="btn btn-register" style="width:100%; font-size:1.05rem;" onclick="doRegister()">Regisztráció</button>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>K3DSMP</h3>
-                    <p style="color:#aaa; line-height:1.7">A legjobb Minecraft élmény Magyarországon! Stabil, biztonságos és izgalmas játékkörnyezet.</p>
-                    <div class="social-icons">
-                        <a href="https://discord.gg/AzSspzCVXN" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                        <a href="#" title="Twitch"><i class="fab fa-twitch"></i></a>
-                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
+    <!-- Bolt -->
+    <section id="shop" class="relative z-10 max-w-6xl mx-auto px-6 py-20">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white text-center">Bolt</h2>
+        <p class="text-zinc-100 text-center mt-3 max-w-md mx-auto">
+            Fenntartsd a szervert, és kapj király jutalmakat cserébe! Fizetés PayPal-lal.
+        </p>
+
+        <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Basic -->
+            <div class="glass rounded-3xl p-8 text-center flex flex-col">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-5">
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
-                <div class="footer-section">
-                    <h3>Gyors Linkek</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Kezdőlap</a></li>
-                        <li><a href="#features">Szolgáltatások</a></li>
-                        <li><a href="#shop">Shop</a></li>
-                        <li><a href="#">Szabályzat</a></li>
-                        <li><a href="#">Támogatás</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Kapcsolat</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-server" style="color:var(--green); margin-right:6px"></i> <strong>Java:</strong> play.k3dsmp.hu</li>
-                        <li><i class="fab fa-android" style="color:var(--green); margin-right:6px"></i> <strong>Bedrock:</strong> join.k3dsmp.hu:10245</li>
-                        <li><i class="fab fa-discord" style="color:var(--green); margin-right:6px"></i> <a href="https://discord.gg/AzSspzCVXN" target="_blank">Discord szerver</a></li>
-                    </ul>
-                </div>
+                <h3 class="font-display text-white font-bold text-lg">Basic</h3>
+                <div class="font-display text-2xl font-bold text-emerald-400 my-4">499 Ft</div>
+                <ul class="text-sm text-zinc-200 leading-relaxed text-left space-y-2 flex-1 mb-6">
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> VIP rang</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Speciális szín a chatben</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> 12 Gyémánt</li>
+                </ul>
+                <div class="paypal-button-container mt-auto" data-plan="basic"></div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2025 K3DSMP Minecraft Szerver. Minden jog fenntartva.</p>
+
+            <!-- Premium -->
+            <div class="glass rounded-3xl p-8 text-center flex flex-col ring-2 ring-emerald-500/60">
+                <div class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-3">Népszerű</div>
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-5">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <h3 class="font-display text-white font-bold text-lg">Premium</h3>
+                <div class="font-display text-2xl font-bold text-emerald-400 my-4">999 Ft</div>
+                <ul class="text-sm text-zinc-200 leading-relaxed text-left space-y-2 flex-1 mb-6">
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Premium rang</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Teljes színválaszték</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Extra rang a Discordra örökre</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> 30 Gyémánt</li>
+                </ul>
+                <div class="paypal-button-container mt-auto" data-plan="premium"></div>
+            </div>
+
+            <!-- Mester -->
+            <div class="glass rounded-3xl p-8 text-center flex flex-col">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-5">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h3 class="font-display text-white font-bold text-lg">Mester</h3>
+                <div class="font-display text-2xl font-bold text-emerald-400 my-4">1999 Ft</div>
+                <ul class="text-sm text-zinc-200 leading-relaxed text-left space-y-2 flex-1 mb-6">
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Mester rang</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Mester rang a Discordra</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Minden szín</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Extra rang örökre</li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> 1x 64 gyémánt</li>
+                </ul>
+                <div class="paypal-button-container mt-auto" data-plan="mester"></div>
             </div>
         </div>
+
+        <p class="text-zinc-500 text-center mt-8 text-xs">
+            A fizetés után újra betöltjük az oldalt, és a rang a bejelentkezett felhasználóhoz kerül. Mester/Premium Discord rang miatt lépj be a Discord szerveredre csatlakoztatva.
+        </p>
+    </section>
+
+    <!-- Csatlakozás -->
+    <section id="join" class="relative z-10 max-w-2xl mx-auto px-6 py-20">
+        <div class="glass rounded-3xl p-8 sm:p-12 text-center">
+            <h2 id="join-title" class="font-display text-3xl sm:text-4xl font-bold text-white">Készen állsz csatlakozni?</h2>
+            <p id="join-sub" class="text-zinc-200 mt-4 max-w-md mx-auto leading-relaxed">
+                Másold ki az IP címed, indítsd el a Minecraftot és lépj be! Ha kérdésed van, érj el minket Discordon.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div class="glass rounded-xl px-6 py-3.5 font-mono text-white text-base sm:text-lg select-all">
+                    play.k3dsmp.hu
+                </div>
+                <button id="copy-ip-btn-2" class="btn-gradient text-white font-semibold px-8 py-3.5 rounded-xl inline-flex items-center gap-2 shrink-0">
+                    <i id="copy-icon-2" class="fa-solid fa-copy"></i>
+                    IP másolása
+                </button>
+            </div>
+            <a href="https://discord.gg/3ksxcQEg2q" target="_blank" rel="noopener" class="mt-8 inline-flex items-center gap-3 text-white/80 hover:text-white transition-colors text-sm">
+                <i class="fa-brands fa-discord text-xl"></i>
+                Csatlakozz a Discord szerverünkhöz
+            </a>
+        </div>
+    </section>
+
+    <!-- Lábléc -->
+    <footer class="relative z-10 border-t border-white/5 py-8 text-center">
+        <p class="text-zinc-200 text-sm">© <span id="year"></span> K3D SMP. Minden jog fenntartva.</p>
     </footer>
 
+    <!-- Bejelentkezés / Regisztráció -->
+    <div id="auth-modal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="modal-box glass rounded-3xl w-full max-w-md p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 id="modal-title" class="font-display text-2xl font-bold text-white">Bejelentkezés</h3>
+                <button id="auth-close" class="text-zinc-100 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="flex rounded-xl bg-white/5 p-1 mb-6">
+                <button data-tab="login" class="tab-btn active flex-1 py-2 rounded-lg text-sm font-semibold text-white">Bejelentkezés</button>
+                <button data-tab="register" class="tab-btn flex-1 py-2 rounded-lg text-sm font-semibold text-zinc-100">Regisztráció</button>
+            </div>
+
+            <!-- Bejelentkezés -->
+            <form id="login-form" class="tab-panel space-y-4">
+                <div>
+                    <label class="text-xs text-zinc-100 uppercase tracking-wider mb-1.5 block">Felhasználónév</label>
+                    <input id="login-user" type="text" class="auth-input" placeholder="Minecraft neved" autocomplete="username">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-100 uppercase tracking-wider mb-1.5 block">Jelszó</label>
+                    <input id="login-pass" type="password" class="auth-input" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <div id="auth-msg" class="text-sm"></div>
+                <button type="submit" class="btn-gradient w-full text-white font-semibold py-3 rounded-xl">Belépés</button>
+            </form>
+
+            <!-- Regisztráció -->
+            <form id="register-form" class="tab-panel hidden-tab space-y-4">
+                <div>
+                    <label class="text-xs text-zinc-100 uppercase tracking-wider mb-1.5 block">Felhasználónév</label>
+                    <input id="reg-user" type="text" class="auth-input" placeholder="Minecraft neved" autocomplete="username">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-100 uppercase tracking-wider mb-1.5 block">Jelszó</label>
+                    <input id="reg-pass" type="password" class="auth-input" placeholder="Legalább 4 karakter" autocomplete="new-password">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-100 uppercase tracking-wider mb-1.5 block">Jelszó újra</label>
+                    <input id="reg-pass2" type="password" class="auth-input" placeholder="Ismételd meg a jelszót" autocomplete="new-password">
+                </div>
+                <div id="reg-msg" class="text-sm"></div>
+                <button type="submit" class="btn-gradient w-full text-white font-semibold py-3 rounded-xl">Regisztráció</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1491150539034071232/K9JtzVtQ4636LAalLXbaO5gFF1NHkOG9GCPGQTHop5VKIYXL9gUHvUF4jf2DGHu1MPnI';
+        const SERVER_IP = 'play.k3dsmp.hu';
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const authModal = document.getElementById('auth-modal');
+        const navAuth = document.getElementById('nav-auth');
 
-        function openModal(type) {
-            const id = type === 'login' ? 'loginModal' : 'registerModal';
-            document.getElementById(id).style.display = 'flex';
-        }
+        const USERS_KEY = 'k3d_users';
+        const SESSION_KEY = 'k3d_session';
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        window.addEventListener('click', function(e) {
-            ['loginModal', 'registerModal'].forEach(id => {
-                const el = document.getElementById(id);
-                if (e.target === el) el.style.display = 'none';
-            });
-        });
-
-        let toastTimer;
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-        }
+        /* ---------- Fiók kezelés (localStorage) ---------- */
 
         function getUsers() {
-            return JSON.parse(localStorage.getItem('k3dsmp_users') || '[]');
+            try { return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; }
+            catch (e) { return {}; }
         }
 
         function saveUsers(users) {
-            localStorage.setItem('k3dsmp_users', JSON.stringify(users));
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
         }
 
-        function getCurrentUser() {
-            return JSON.parse(sessionStorage.getItem('k3dsmp_session') || 'null');
+        function getSession() {
+            return localStorage.getItem(SESSION_KEY);
         }
 
-        function setCurrentUser(user) {
-            sessionStorage.setItem('k3dsmp_session', JSON.stringify(user));
-            updateAuthButtons();
+        function setSession(user) {
+            localStorage.setItem(SESSION_KEY, user);
         }
 
-        function updateAuthButtons() {
-            const user = getCurrentUser();
-            const container = document.querySelector('.auth-buttons');
-            if (user) {
-                container.innerHTML = '<span style="color:var(--green);font-weight:600;display:flex;align-items:center;gap:10px;"><i class="fas fa-user"></i> ' + user.username + '</span><button class="btn btn-login" onclick="doLogout()">Kijelentkezés</button>';
-            }
+        function clearSession() {
+            localStorage.removeItem(SESSION_KEY);
         }
 
-        function doLogin() {
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value;
-            if (!u || !p) { showToast('⚠️ Töltsd ki az összes mezőt!'); return; }
-            
-            const users = getUsers();
-            const user = users.find(x => x.username === u && x.password === p);
-            
-            if (user) {
-                setCurrentUser(user);
-                showToast('✅ Bejelentkezés sikeres! Üdv, ' + u + '!');
-                closeModal('loginModal');
+        function encodePass(pass) {
+            return btoa(unescape(encodeURIComponent(pass)));
+        }
+
+        function isLoggedIn() {
+            const u = getSession();
+            return u && getUsers()[u] !== undefined;
+        }
+
+        function updateAuthUI() {
+            navAuth.innerHTML = '';
+            if (isLoggedIn()) {
+                const user = getSession();
+                const wrap = document.createElement('div');
+                wrap.className = 'flex items-center gap-3';
+
+                const btn = document.createElement('button');
+                btn.className = 'btn-ghost text-emerald-400 text-sm font-semibold px-4 py-2 rounded-full inline-flex items-center gap-2';
+                btn.innerHTML = '<i class="fa-solid fa-user"></i>' + user;
+                btn.addEventListener('click', () => alert('Bejelentkezve, mint: ' + user));
+
+                const logout = document.createElement('button');
+                logout.id = 'logout-btn';
+                logout.className = 'btn-ghost text-zinc-200 hover:text-white text-sm font-semibold px-3 py-2 rounded-full';
+                logout.textContent = 'Kilépés';
+                logout.addEventListener('click', () => {
+                    clearSession();
+                    updateAuthUI();
+                    renderJoinGreeting();
+                });
+
+                wrap.appendChild(btn);
+                wrap.appendChild(logout);
+                navAuth.appendChild(wrap);
             } else {
-                showToast('❌ Hibás felhasználónév vagy jelszó!');
+                const wrap = document.createElement('div');
+                wrap.className = 'flex items-center gap-3';
+
+                const login = document.createElement('button');
+                login.id = 'nav-login-btn';
+                login.className = 'btn-ghost text-white/80 hover:text-white text-sm font-semibold px-4 py-2 rounded-full';
+                login.textContent = 'Bejelentkezés';
+                login.addEventListener('click', () => openAuthModal('login'));
+
+                const register = document.createElement('button');
+                register.id = 'nav-register-btn';
+                register.className = 'btn-gradient text-white text-sm font-semibold px-5 py-2 rounded-full inline-flex items-center gap-2';
+                register.innerHTML = '<i class="fa-solid fa-user-plus"></i> Regisztráció';
+                register.addEventListener('click', () => openAuthModal('register'));
+
+                wrap.appendChild(login);
+                wrap.appendChild(register);
+                navAuth.appendChild(wrap);
             }
         }
 
-        function doRegister() {
-            const u = document.getElementById('regUsername').value.trim();
-            const e = document.getElementById('regEmail').value.trim();
-            const p = document.getElementById('regPassword').value;
-            const c = document.getElementById('regConfirmPassword').value;
-            
-            if (!u || !e || !p || !c) { showToast('⚠️ Töltsd ki az összes mezőt!'); return; }
-            if (u.length < 3) { showToast('⚠️ A felhasználónév minimum 3 karakter!'); return; }
-            if (!e.includes('@') || !e.includes('.')) { showToast('⚠️ Érvényes email címet adj meg!'); return; }
-            if (p.length < 6) { showToast('⚠️ A jelszó minimum 6 karakter!'); return; }
-            if (p !== c) { showToast('❌ A két jelszó nem egyezik!'); return; }
-            
-            const users = getUsers();
-            if (users.find(x => x.username === u)) {
-                showToast('❌ Ez a felhasználónév már foglalt!');
-                return;
-            }
-            if (users.find(x => x.email === e)) {
-                showToast('❌ Ez az email már regisztrálva van!');
-                return;
-            }
-            
-            users.push({ username: u, email: e, password: p });
-            saveUsers(users);
-            setCurrentUser({ username: u });
-            showToast('✅ Regisztráció sikeres! Üdv, ' + u + '!');
-            closeModal('registerModal');
+        /* ---------- Modal vezérlés ---------- */
+
+        function openAuthModal(tab) {
+            authModal.classList.add('open');
+            switchTab(tab);
         }
 
-        function doLogout() {
-            sessionStorage.removeItem('k3dsmp_session');
-            updateAuthButtons();
-            showToast('👋 Sikeresen kijelentkeztél!');
+        function closeAuthModal() {
+            authModal.classList.remove('open');
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText('play.k3dsmp.hu').then(() => {
-                showToast('📋 IP másolva: play.k3dsmp.hu');
-            }).catch(() => {
-                showToast('📋 IP: play.k3dsmp.hu');
+        function switchTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('login-form').classList.toggle('hidden-tab', !isLogin);
+            document.getElementById('register-form').classList.toggle('hidden-tab', isLogin);
+            document.getElementById('modal-title').textContent = isLogin ? 'Bejelentkezés' : 'Regisztráció';
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const active = btn.dataset.tab === tab;
+                btn.classList.toggle('active', active);
+                btn.classList.toggle('text-white', active);
+                btn.classList.toggle('text-zinc-100', !active);
             });
+            document.getElementById('auth-msg').textContent = '';
+            document.getElementById('reg-msg').textContent = '';
         }
 
-        async function sendWebhook(packageName) {
+        function showMsg(el, text, ok) {
+            el.textContent = text;
+            el.className = 'text-sm ' + (ok ? 'text-emerald-400' : 'text-red-400');
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+        });
+
+        document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) closeAuthModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAuthModal();
+        });
+
+        /* ---------- Regisztráció ---------- */
+
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const pass2 = document.getElementById('reg-pass2').value;
+            const msg = document.getElementById('reg-msg');
+
+            if (!user || !pass) return showMsg(msg, 'Töltsd ki a mezőket!', false);
+            if (!/^[a-zA-Z0-9_]{3,16}$/.test(user)) return showMsg(msg, 'Név: 3-16 karakter, csak betű/szám/_; lehet!', false);
+            if (pass.length < 4) return showMsg(msg, 'A jelszó legalább 4 karakter legyen!', false);
+            if (pass !== pass2) return showMsg(msg, 'A két jelszó nem egyezik!', false);
+
+            const users = getUsers();
+            if (users[user]) return showMsg(msg, 'Ezzel a névvel már regisztráltak!', false);
+
+            users[user] = encodePass(pass);
+            saveUsers(users);
+
+            showMsg(msg, 'Sikeres regisztráció! Bejelentkeztetünk...', true);
+            setTimeout(() => {
+                setSession(user);
+                updateAuthUI();
+                closeAuthModal();
+                renderJoinGreeting();
+            }, 500);
+        });
+
+        /* ---------- Bejelentkezés ---------- */
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            const msg = document.getElementById('auth-msg');
+
+            if (!user || !pass) return showMsg(msg, 'Töltsd ki a mezőket!', false);
+
+            const users = getUsers();
+            const stored = users[user];
+            if (!stored) return showMsg(msg, 'Nem létezik ilyen felhasználó!', false);
+
+            if (stored !== encodePass(pass)) return showMsg(msg, 'Hibás jelszó!', false);
+
+            showMsg(msg, 'Sikeres bejelentkezés!', true);
+            setTimeout(() => {
+                setSession(user);
+                updateAuthUI();
+                closeAuthModal();
+                renderJoinGreeting();
+            }, 500);
+        });
+
+        /* ---------- Üdvözlő szöveg csatlakozás szekciónál ---------- */
+
+        function renderJoinGreeting() {
+            const title = document.getElementById('join-title');
+            const sub = document.getElementById('join-sub');
+            if (isLoggedIn()) {
+                title.textContent = 'Üdvözlünk, ' + getSession() + '!';
+                sub.textContent = 'Másold ki az IP címet és lépj be — a világ vár rád! Ha kérdésed van, érj el minket Discordon.';
+            } else {
+                title.textContent = 'Készen állsz csatlakozni?';
+                sub.textContent = 'Másold ki az IP címed, indítsd el a Minecraftot és lépj be! Ha kérdésed van, érj el minket Discordon.';
+            }
+        }
+
+        /* ---------- IP másolás ---------- */
+
+        function copyToClipboard(btn, icon, text) {
+            const fallback = () => {
+                const ta = document.createElement('textarea');
+                ta.value = SERVER_IP;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            };
             try {
-                await fetch(DISCORD_WEBHOOK, {
+                navigator.clipboard.writeText(SERVER_IP).catch(fallback);
+            } catch (e) {
+                fallback();
+            }
+            const old = icon.className;
+            icon.className = 'fa-solid fa-check text-emerald-400';
+            setTimeout(() => { icon.className = old; }, 1500);
+            showFeedback(text);
+        }
+
+        function showFeedback(el) {
+            el.classList.remove('opacity-0');
+            el.classList.add('opacity-100');
+            setTimeout(() => {
+                el.classList.add('opacity-0');
+                el.classList.remove('opacity-100');
+            }, 2000);
+        }
+
+        document.getElementById('copy-ip-btn').addEventListener('click', (e) => {
+            copyToClipboard(e.currentTarget, document.getElementById('copy-icon'), document.getElementById('copy-feedback'));
+        });
+
+        document.getElementById('copy-ip-btn-2').addEventListener('click', (e) => {
+            copyToClipboard(e.currentTarget, document.getElementById('copy-icon-2'), document.getElementById('copy-feedback'));
+        });
+
+        /* ---------- Bolt: PayPal ---------- */
+
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1538929216702255214/2om61uohcTXJQtClbOCcfQ4gD6Eg760_m8ZAg2Y10esVyzDgOhBgFSJovtNDbK-fdkcu';
+
+        async function sendDiscordNotification(purchase) {
+            try {
+                await fetch(DISCORD_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        username: 'K3D SMP Bolt',
                         embeds: [{
-                            title: '🛒 Új vásárlás!',
-                            description: 'Valaki megvásárolta a **' + packageName + '** csomagot!',
-                            color: 5763714,
+                            title: 'Új vásárlás!',
+                            color: 3050327,
+                            fields: [
+                                { name: 'Csomag', value: purchase.plan + ' (' + purchase.price + ' Ft)', inline: true },
+                                { name: 'Játékos', value: purchase.user, inline: true },
+                                { name: 'Rendelés', value: purchase.orderId, inline: false }
+                            ],
                             timestamp: new Date().toISOString()
                         }]
                     })
                 });
-            } catch (e) { console.log('Webhook hiba:', e); }
+            } catch (e) {
+                console.error('Discord webhook hiba:', e);
+            }
         }
 
-        const packages = {
-            basic:   { name: 'Basic',   amount: '1.54' },
-            premium: { name: 'Premium', amount: '3.33' },
-            mester:  { name: 'Mester',  amount: '7.67' },
+        const PLANS = {
+            basic:   { name: 'Basic',   price: 499,  diamonds: 12 },
+            premium: { name: 'Premium', price: 999,  diamonds: 30 },
+            mester:  { name: 'Mester',  price: 1999, diamonds: 64 }
         };
 
-        function initPayPalButton(containerId, pkg) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            paypal.Buttons({
-                style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'pay', tagline: false },
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{ description: 'K3DSMP – ' + pkg.name + ' csomag', amount: { currency_code: 'EUR', value: pkg.amount } }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        sendWebhook(pkg.name);
-                        showToast('✅ Köszönjük a vásárlást!');
-                    });
-                },
-                onError: function(err) { showToast('❌ PayPal hiba. Próbáld újra!'); console.error(err); },
-                onCancel: function() { showToast('ℹ️ Fizetés megszakítva.'); }
-            }).render('#' + containerId).catch(function(err) {
-                console.error('PayPal render error:', err);
+        function renderPayPalButtons() {
+            if (typeof paypal === 'undefined') return;
+            document.querySelectorAll('.paypal-button-container').forEach(container => {
+                const planKey = container.getAttribute('data-plan');
+                const plan = PLANS[planKey];
+                if (!plan) return;
+                container.innerHTML = '';
+                paypal.Buttons({
+                    style: {
+                        layout: 'vertical',
+                        color: 'gold',
+                        shape: 'rect',
+                        label: 'paypal'
+                    },
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: 'K3D SMP ' + plan.name + ' csomag',
+                                amount: { currency_code: 'HUF', value: String(plan.price) }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(function(details) {
+                            const user = getSession() || 'Ismeretlen játékos';
+                            const orderId = details.id || data.orderID;
+                            const payout = {
+                                plan: plan.name,
+                                price: plan.price,
+                                user: user,
+                                orderId: orderId
+                            };
+                            localStorage.setItem('k3d_purchase_' + orderId, JSON.stringify({
+                                plan: plan.name,
+                                user: user,
+                                date: new Date().toISOString(),
+                                orderId: orderId
+                            }));
+                            sendDiscordNotification(payout);
+                            alert('Köszönjük a vásárlást, ' + plan.name + '! A rang ' + user + ' felhasználónak aktiválva lett. (Rendelés: ' + orderId + ')');
+                        });
+                    },
+                    onCancel: (data) => {
+                        alert('A fizetést megszakítottad.');
+                    },
+                    onError: (err) => {
+                        alert('Hiba történt a fizetés során: ' + err);
+                    }
+                }).render(container);
             });
         }
 
-        window.addEventListener('DOMContentLoaded', function() {
-            updateAuthButtons();
-            loadPayPal().then(function() {
-                initPayPalButton('paypal-basic',   packages.basic);
-                initPayPalButton('paypal-premium', packages.premium);
-                initPayPalButton('paypal-mester',  packages.mester);
-            }).catch(function() {
-                ['paypal-basic','paypal-premium','paypal-mester'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerHTML = '<p style="color:#f66;font-size:0.85rem;padding:8px;text-align:center">⚠️ PayPal nem töltött be.<br>Ellenőrizd az internetkapcsolatod.</p>';
-                });
-            });
+        renderPayPalButtons();
+
+        /* ---------- Szerver státusz ---------- */
+
+        async function checkStatus() {
+            try {
+                const res = await fetch('https://api.mcsrvstat.us/3/' + SERVER_IP);
+                const data = await res.json();
+                if (data.online) {
+                    const players = data.players && data.players.online ? data.players.online : 0;
+                    statusDot.className = 'status-dot bg-emerald-600';
+                    statusText.className = 'text-emerald-600';
+                    statusText.textContent = 'A szerver online — ' + players + ' játékos van fenn';
+                } else {
+                    statusDot.className = 'status-dot bg-red-700';
+                    statusText.className = 'text-red-700';
+                    statusText.textContent = 'A szerver jelenleg offline';
+                }
+            } catch (e) {
+                statusDot.className = 'status-dot bg-amber-700';
+                statusText.className = 'text-amber-700';
+                statusText.textContent = 'Szerver állapot nem elérhető';
+            }
+        }
+
+        /* ---------- Navigáció ---------- */
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
         });
 
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId && targetId !== '#') {
-                    const el = document.querySelector(targetId);
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        const revealObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.12 });
+        /* ---------- Indítás ---------- */
 
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        updateAuthUI();
+        renderJoinGreeting();
+        checkStatus();
+        setInterval(checkStatus, 30000);
     </script>
 </body>
 </html>
